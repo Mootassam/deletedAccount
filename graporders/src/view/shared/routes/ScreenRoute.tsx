@@ -12,7 +12,7 @@ function ScreenRoute({ component: Component, currentTenant,currentUser, ...reset
         if (!permissionChecker.isAuthenticated) {
           return (
             <Redirect
-              to={{ pathname: "/auth/signin", state: { from: location } }}
+              to={{ pathname: "/get-started", state: { from: location } }}
             />
           );
         }

@@ -12,17 +12,17 @@ const RateModal: React.FC<RateModalProps> = ({
   onClose,
   onSubmit,
   options = [
-    'The rooms were clean, very comfortable, and the staff was amazing',
-    'It was great. Service top notch as always',
-    'The staff at this property are all great! They all go above and beyond to make your stay comfortable',
-    'I had a wonderful experience here',
-    'Food was great with many choices to choose from',
-    'Excellent hotel with excellent location located at the city center',
-    'Very central with comfort rooms with amazing aircon. Breakfast was delicious and the staff extremely helpful and friendly',
+    'The car was in immaculate condition, performed flawlessly throughout the rental',
+    'Exceptional service and the vehicle exceeded all expectations',
+    'The staff went above and beyond to ensure a perfect luxury driving experience',
+    'An unforgettable experience driving this masterpiece on the open road',
+    'The vehicle was perfectly prepared, spotless and ready to go',
+    'Excellent service with premium vehicles located in the heart of the city',
+    'The performance, comfort, and attention to detail made this rental exceptional. Staff was extremely helpful and professional',
   ],
 }) => {
-  const [selectedIndices, setSelectedIndices] = useState<number[]>([0]); // first option selected by default
-  const [rating, setRating] = useState<number>(4); // default rating 4
+  const [selectedIndices, setSelectedIndices] = useState<number[]>([0]);
+  const [rating, setRating] = useState<number>(4);
 
   if (!visible) return null;
 
@@ -42,7 +42,6 @@ const RateModal: React.FC<RateModalProps> = ({
     onSubmit(selectedIndices, rating);
   };
 
-  // Preview text: first selected option, or fallback
   const previewText =
     selectedIndices.length > 0
       ? options[selectedIndices[0]]
@@ -51,18 +50,15 @@ const RateModal: React.FC<RateModalProps> = ({
   return (
     <div className="rate-modal-overlay" onClick={onClose}>
       <div className="rate-modal" onClick={e => e.stopPropagation()}>
-        {/* Header */}
         <div className="rate-modal-header">
-          <h2>Rate</h2>
+          <h2>Rate Your Experience</h2>
           <div className="rate-close-icon" onClick={onClose}>
             <i className="fas fa-times"></i>
           </div>
         </div>
 
-        {/* Preview */}
         <div className="rate-selected-preview">“{previewText}”</div>
 
-        {/* Options list */}
         <div className="rate-options-list">
           {options.map((text, index) => (
             <div
@@ -84,12 +80,10 @@ const RateModal: React.FC<RateModalProps> = ({
           ))}
         </div>
 
-        {/* Submit button */}
         <button className="rate-submit-btn" onClick={handleSubmit}>
-          To be submitted
+          Submit Review
         </button>
 
-        {/* Rating footer */}
         <div className="rate-rating-footer">
           <div className="rate-stars-container">
             {[1, 2, 3, 4, 5].map(star => (
@@ -113,86 +107,123 @@ const RateModal: React.FC<RateModalProps> = ({
           left: 0;
           width: 100%;
           height: 100%;
-          background-color: rgba(0, 0, 0, 0.4);
-          backdrop-filter: blur(3px);
+          background-color: rgba(0, 0, 0, 0.7);
+          backdrop-filter: blur(8px);
           display: flex;
           align-items: center;
           justify-content: center;
           padding: 16px;
           z-index: 2000;
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+          font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
         .rate-modal {
-          background: #ffffff;
+          background: linear-gradient(135deg, #0f0f0f 0%, #0a0a0a 100%);
           width: 100%;
-          max-width: 380px;
+          max-width: 400px;
           border-radius: 32px;
-          box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.3), 0 10px 30px -10px rgba(0, 0, 0, 0.2);
+          box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(212, 175, 55, 0.3);
           overflow: hidden;
           display: flex;
           flex-direction: column;
           max-height: 85vh;
+          border: 1px solid rgba(212, 175, 55, 0.3);
         }
 
         .rate-modal-header {
-          padding: 20px 22px 6px 22px;
+          padding: 24px 24px 12px 24px;
           display: flex;
           justify-content: space-between;
           align-items: center;
+          border-bottom: 1px solid rgba(212, 175, 55, 0.2);
         }
 
         .rate-modal-header h2 {
-          font-size: 1.6rem;
+          font-size: 1.5rem;
           font-weight: 700;
           letter-spacing: -0.5px;
-          color: #1c1c1e;
+          background: linear-gradient(135deg, #fff 0%, #d4af37 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
           margin: 0;
+          font-family: 'Playfair Display', serif;
         }
 
         .rate-close-icon {
-          font-size: 1.4rem;
-          color: #8e8e93;
+          font-size: 1.2rem;
+          color: rgba(255, 255, 255, 0.7);
           cursor: pointer;
           width: 36px;
           height: 36px;
           display: flex;
           align-items: center;
           justify-content: center;
-          background: #f0f0f0;
+          background: rgba(212, 175, 55, 0.1);
           border-radius: 50%;
+          transition: all 0.2s;
+          border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .rate-close-icon:hover {
+          background: rgba(212, 175, 55, 0.2);
+          transform: rotate(90deg);
+          color: #d4af37;
         }
 
         .rate-selected-preview {
-          padding: 0 22px 12px 22px;
+          padding: 16px 24px 12px 24px;
           font-size: 0.9rem;
           font-weight: 500;
-          color: #f7931e;
-          border-bottom: 1px solid #f0f0f0;
-          margin-bottom: 4px;
-          line-height: 1.4;
+          color: #d4af37;
+          border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+          margin-bottom: 8px;
+          line-height: 1.5;
+          font-style: italic;
+          background: rgba(212, 175, 55, 0.05);
         }
 
         .rate-options-list {
-          padding: 0 22px;
+          padding: 8px 20px;
           overflow-y: auto;
           flex: 1 1 auto;
           max-height: 320px;
+        }
+
+        .rate-options-list::-webkit-scrollbar {
+          width: 4px;
+        }
+        
+        .rate-options-list::-webkit-scrollbar-track {
+          background: rgba(255, 255, 255, 0.05);
+          border-radius: 10px;
+        }
+        
+        .rate-options-list::-webkit-scrollbar-thumb {
+          background: #d4af37;
+          border-radius: 10px;
         }
 
         .rate-option-row {
           display: flex;
           align-items: flex-start;
           justify-content: space-between;
-          padding: 12px 0;
-          border-bottom: 1px solid #f0f0f0;
+          padding: 12px 8px;
+          border-bottom: 1px solid rgba(212, 175, 55, 0.1);
           cursor: pointer;
+          transition: all 0.2s;
+          border-radius: 12px;
+        }
+
+        .rate-option-row:hover {
+          background: rgba(212, 175, 55, 0.08);
+          padding-left: 12px;
         }
 
         .rate-option-text {
           font-size: 0.85rem;
-          line-height: 1.4;
-          color: #1c1c1e;
+          line-height: 1.5;
+          color: rgba(255, 255, 255, 0.85);
           flex: 1;
           padding-right: 16px;
           font-weight: 450;
@@ -202,8 +233,8 @@ const RateModal: React.FC<RateModalProps> = ({
           width: 22px;
           height: 22px;
           border-radius: 50%;
-          border: 2px solid #c6c6c8;
-          background: white;
+          border: 2px solid rgba(212, 175, 55, 0.5);
+          background: transparent;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -211,75 +242,127 @@ const RateModal: React.FC<RateModalProps> = ({
           font-size: 12px;
           flex-shrink: 0;
           margin-top: 2px;
-          transition: all 0.1s;
+          transition: all 0.2s;
         }
 
         .rate-option-checkbox.checked {
-          background: #f7931e;
-          border-color: #f7931e;
-          color: white;
+          background: #d4af37;
+          border-color: #d4af37;
+        }
+
+        .rate-option-checkbox.checked i {
+          color: #0a0a0a;
+          font-size: 12px;
         }
 
         .rate-submit-btn {
-          background: #f7931e;
+          background: linear-gradient(135deg, #d4af37 0%, #b8960f 100%);
           border: none;
           border-radius: 30px;
           padding: 14px 20px;
-          margin: 16px 22px 16px 22px;
-          color: white;
-          font-size: 1.1rem;
+          margin: 16px 24px 12px 24px;
+          color: #0a0a0a;
+          font-size: 1rem;
           font-weight: 700;
           text-align: center;
-          letter-spacing: 0.2px;
-          box-shadow: 0 12px 24px -10px rgba(247, 147, 30, 0.4);
+          letter-spacing: 0.5px;
+          box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
           cursor: pointer;
-          transition: background 0.2s;
+          transition: all 0.2s ease;
+          border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .rate-submit-btn:hover {
-          background: #e5830e;
+          transform: translateY(-2px);
+          box-shadow: 0 12px 28px rgba(212, 175, 55, 0.5);
+          background: linear-gradient(135deg, #e0b84d 0%, #c9a227 100%);
+        }
+
+        .rate-submit-btn:active {
+          transform: translateY(1px);
         }
 
         .rate-rating-footer {
           display: flex;
           align-items: center;
-          justify-content: space-between;
-          padding: 14px 22px 18px 22px;
-          border-top: 1px solid #f0f0f0;
-          background: #fafafc;
+          justify-content: center;
+          padding: 16px 24px 24px 24px;
+          border-top: 1px solid rgba(212, 175, 55, 0.2);
+          background: rgba(10, 10, 10, 0.4);
         }
 
         .rate-stars-container {
           display: flex;
-          gap: 5px;
+          gap: 8px;
           align-items: center;
         }
 
         .rate-star-filled {
-          color: #f7931e;
-          font-size: 1.4rem;
+          color: #d4af37;
+          font-size: 1.6rem;
           cursor: pointer;
+          transition: all 0.2s;
+          filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.3));
         }
 
         .rate-star-empty {
-          color: #d5d5d7;
-          font-size: 1.4rem;
+          color: rgba(255, 255, 255, 0.2);
+          font-size: 1.6rem;
           cursor: pointer;
+          transition: all 0.2s;
+        }
+
+        .rate-star-filled:hover, .rate-star-empty:hover {
+          transform: scale(1.1);
         }
 
         .rate-rating-number {
           font-size: 1.2rem;
-          font-weight: 600;
-          color: #1c1c1e;
-          margin-left: 10px;
+          font-weight: 700;
+          color: #d4af37;
+          margin-left: 12px;
+          letter-spacing: 0.5px;
         }
 
-        .rate-options-list::-webkit-scrollbar {
-          width: 4px;
+        /* Animation for modal */
+        @keyframes modalSlideUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
-        .rate-options-list::-webkit-scrollbar-thumb {
-          background: #ccc;
-          border-radius: 20px;
+
+        .rate-modal {
+          animation: modalSlideUp 0.3s ease;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+          .rate-modal-header h2 {
+            font-size: 1.3rem;
+          }
+          
+          .rate-star-filled, .rate-star-empty {
+            font-size: 1.3rem;
+          }
+          
+          .rate-rating-number {
+            font-size: 1rem;
+          }
+          
+          .rate-submit-btn {
+            padding: 12px 18px;
+            font-size: 0.9rem;
+            margin: 12px 20px 8px 20px;
+          }
+          
+          .rate-rating-footer {
+            padding: 12px 20px 20px 20px;
+          }
         }
       `}</style>
     </div>

@@ -511,13 +511,13 @@ const en = {
         more: "more",
         submit: "Submit Review",
         options: {
-          0: "The rooms were clean, very comfortable, and the staff was amazing",
-          1: "It was great. Service top notch as always",
-          2: "The staff at this property are all great! They all go above and beyond to make your stay comfortable",
-          3: "I had a wonderful experience here",
-          4: "Food was great with many choices to choose from",
-          5: "Excellent hotel with excellent location located at the city center",
-          6: "Very central with comfort rooms with amazing aircon. Breakfast was delicious and the staff extremely helpful and friendly"
+          0: "The car was in immaculate condition, performed flawlessly throughout the rental",
+          1: "Exceptional service and the vehicle exceeded all expectations",
+          2: "The staff went above and beyond to ensure a perfect luxury driving experience",
+          3: "An unforgettable experience driving this masterpiece on the open road",
+          4: "The vehicle was perfectly prepared, spotless and ready to go",
+          5: "Excellent service with premium vehicles located in the heart of the city",
+          6: "The performance, comfort, and attention to detail made this rental exceptional. Staff was extremely helpful and professional"
         }
       },
       modal: {

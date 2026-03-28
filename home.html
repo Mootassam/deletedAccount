@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>ÉLITE · home</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Montserrat:wght@300;500;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #0a0a0f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .luxe-container {
+      max-width: 430px;
+      width: 100%;
+      min-height: 100vh;
+      background: #0a0a0f;
+      color: #f0eadc;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 0 40px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(212, 175, 55, 0.15) inset;
+      position: relative;
+      padding: 0 24px 24px 24px;
+    }
+
+    /* brand header */
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 48px;
+      margin-bottom: 20px;
+    }
+
+    .brand-dot {
+      display: block;
+      width: 8px;
+      height: 8px;
+      background: #d4af37;
+      transform: rotate(45deg);
+      box-shadow: 0 0 12px rgba(212, 175, 55, 0.6);
+    }
+
+    .brand-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      letter-spacing: 4px;
+      color: #f0eadc;
+      text-transform: uppercase;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.4);
+      padding-bottom: 4px;
+    }
+
+    /* hero carousel (full bleed within container padding) */
+    .hero-bleed {
+      width: calc(100% + 48px); /* counteract container padding */
+      margin-left: -24px;
+      margin-right: -24px;
+      margin-bottom: 32px;
+      position: relative;
+    }
+
+    .hero-carousel {
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scroll-behavior: smooth;
+      white-space: nowrap;
+      scrollbar-width: none; /* hide scroll */
+      -ms-overflow-style: none;
+    }
+    .hero-carousel::-webkit-scrollbar {
+      display: none;
+    }
+
+    .hero-track {
+      display: flex;
+      flex-wrap: nowrap;
+    }
+
+    .hero-slide {
+      flex: 0 0 100%;
+      scroll-snap-align: start;
+      height: 380px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-slide::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.5) 100%);
+      box-shadow: inset 0 0 0 1px rgba(212,175,55,0.1);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .hero-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .hero-caption {
+      position: absolute;
+      bottom: 30px;
+      left: 24px;
+      z-index: 3;
+      text-shadow: 0 4px 12px rgba(0,0,0,0.6);
+    }
+
+    .hero-caption h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 600;
+      color: #fcf9f0;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .hero-caption p {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 3px;
+      color: #d4af37;
+      text-transform: uppercase;
+    }
+
+    /* dot navigation for hero */
+    .hero-dots {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 16px;
+      margin-bottom: 20px;
+    }
+
+    .hero-dot {
+      display: block;
+      width: 10px;
+      height: 10px;
+      background: transparent;
+      border: 1px solid #d4af37;
+      transform: rotate(45deg);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .hero-dot.active {
+      background: #d4af37;
+      box-shadow: 0 0 12px #d4af37;
+    }
+
+    /* section headings */
+    .section-head {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: #fcf9f0;
+      position: relative;
+      padding-bottom: 8px;
+    }
+    .section-head::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 60px;
+      height: 1px;
+      background: #d4af37;
+    }
+
+    /* featured cards */
+    .featured-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+
+    .car-card {
+      display: flex;
+      background: rgba(20, 18, 16, 0.6);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      backdrop-filter: blur(2px);
+      transition: border-color 0.3s ease;
+    }
+    .car-card:hover {
+      border-color: #d4af37;
+    }
+
+    .card-image {
+      width: 120px;
+      height: 120px;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+    .car-card:hover .card-image img {
+      transform: scale(1.05);
+    }
+
+    .card-content {
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .card-content h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #f0eadc;
+      margin-bottom: 6px;
+    }
+    .card-content .spec {
+      font-size: 0.7rem;
+      letter-spacing: 1px;
+      color: #aa9f8c;
+      margin-bottom: 10px;
+    }
+    .card-link {
+      color: #d4af37;
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      align-self: flex-start;
+      transition: border-color 0.2s;
+    }
+    .card-link:hover {
+      border-bottom: 1px solid #d4af37;
+    }
+
+    /* concierge section */
+    .concierge {
+      background: rgba(0, 0, 0, 0.3);
+      border-left: 3px solid #d4af37;
+      padding: 24px 20px;
+      margin-bottom: 48px;
+    }
+    .concierge p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      line-height: 1.5;
+      color: #e0d9cc;
+      font-weight: 400;
+      margin-bottom: 16px;
+    }
+    .concierge .signature {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 3px;
+      color: #d4af37;
+      text-transform: uppercase;
+    }
+
+    /* explore button */
+    .explore-btn {
+      display: block;
+      width: 100%;
+      background: transparent;
+      border: 1.5px solid #d4af37;
+      color: #d4af37;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      font-size: 1.2rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      padding: 16px 0;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: rgba(10, 10, 15, 0.7);
+      backdrop-filter: blur(2px);
+      box-shadow: 0 8px 20px -6px rgba(0,0,0,0.8);
+      text-align: center;
+      margin-bottom: 32px;
+      text-decoration: none;
+    }
+    .explore-btn:hover {
+      background: #d4af37;
+      color: #0a0a0f;
+      border-color: #d4af37;
+      box-shadow: 0 8px 25px -4px #d4af37;
+    }
+
+    /* footer */
+    .footer-links {
+      display: flex;
+      justify-content: space-between;
+      padding: 20px 0 10px;
+      border-top: 1px solid rgba(212, 175, 55, 0.2);
+    }
+    .footer-links a {
+      color: #aa9f8c;
+      text-decoration: none;
+      font-size: 0.7rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover {
+      color: #d4af37;
+    }
+    .footer-note {
+      text-align: center;
+      font-size: 0.6rem;
+      letter-spacing: 2px;
+      color: #4a4640;
+      margin: 16px 0 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="luxe-container">
+    <!-- brand -->
+    <div class="brand">
+      <span class="brand-dot"></span>
+      <span class="brand-name">ÉLITE AUTO</span>
+    </div>
+
+    <!-- hero carousel (full bleed) -->
+    <div class="hero-bleed">
+      <div class="hero-carousel" id="heroCarousel">
+        <div class="hero-track">
+          <div class="hero-slide">
+            <img src="https://images.unsplash.com/photo-1614200179396-2bdb77ebf81b?w=1000&q=90&auto=format&fit=crop" alt="Lamborghini Revuelto">
+            <div class="hero-caption">
+              <h3>Revuelto</h3>
+              <p>hybrid v12</p>
+            </div>
+          </div>
+          <div class="hero-slide">
+            <img src="https://images.unsplash.com/photo-1563720360172-67b8f3dce741?w=1000&q=90&auto=format&fit=crop" alt="Rolls-Royce Ghost">
+            <div class="hero-caption">
+              <h3>Ghost</h3>
+              <p>bespoke serenity</p>
+            </div>
+          </div>
+          <div class="hero-slide">
+            <img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?w=1000&q=90&auto=format&fit=crop" alt="Bentley Continental">
+            <div class="hero-caption">
+              <h3>Continental GT</h3>
+              <p>grand tourer</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- dots -->
+      <div class="hero-dots" id="heroDots">
+        <span class="hero-dot active" data-index="0"></span>
+        <span class="hero-dot" data-index="1"></span>
+        <span class="hero-dot" data-index="2"></span>
+      </div>
+    </div>
+
+    <!-- featured collection -->
+    <h2 class="section-head">current collection</h2>
+    <div class="featured-grid">
+      <div class="car-card">
+        <div class="card-image">
+          <img src="https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=600&q=80&auto=format&fit=crop" alt="Lamborghini Huracán">
+        </div>
+        <div class="card-content">
+          <h4>Huracán Tecnica</h4>
+          <div class="spec">V10 • 640 hp</div>
+          <a href="#" class="card-link">discover →</a>
+        </div>
+      </div>
+      <div class="car-card">
+        <div class="card-image">
+          <img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=600&q=80&auto=format&fit=crop" alt="Mercedes Maybach">
+        </div>
+        <div class="card-content">
+          <h4>Maybach S680</h4>
+          <div class="spec">V12 • executive</div>
+          <a href="#" class="card-link">discover →</a>
+        </div>
+      </div>
+      <div class="car-card">
+        <div class="card-image">
+          <img src="https://images.unsplash.com/photo-1580274455191-1c6221b0c3b3?w=600&q=80&auto=format&fit=crop" alt="Ferrari Roma">
+        </div>
+        <div class="card-content">
+          <h4>Roma Spider</h4>
+          <div class="spec">V8 • 612 hp</div>
+          <a href="#" class="card-link">discover →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- concierge section -->
+    <div class="concierge">
+      <p>“Beyond the drive — a relationship crafted in detail. Private viewings, tailored experiences, and global concierge.”</p>
+      <div class="signature">ÉLITE CONCIERGE</div>
+    </div>
+
+    <!-- get started / explore button -->
+    <a href="#" class="explore-btn">explore</a>
+
+    <!-- footer -->
+    <div class="footer-links">
+      <a href="#">privacy</a>
+      <a href="#">collection</a>
+      <a href="#">contact</a>
+      <a href="#">visit</a>
+    </div>
+    <div class="footer-note">by appointment only · 2025</div>
+  </div>
+
+  <script>
+    (function() {
+      const carousel = document.getElementById('heroCarousel');
+      const dots = document.querySelectorAll('.hero-dot');
+      if (!carousel) return;
+
+      function updateActiveDot() {
+        if (!carousel) return;
+        const scrollLeft = carousel.scrollLeft;
+        const index = Math.round(scrollLeft / carousel.clientWidth);
+        const activeIndex = Math.min(Math.max(index, 0), dots.length - 1);
+
+        dots.forEach((dot, i) => {
+          if (i === activeIndex) dot.classList.add('active');
+          else dot.classList.remove('active');
+        });
+      }
+
+      function scrollToSlide(index) {
+        const targetScroll = index * carousel.clientWidth;
+        carousel.scrollTo({ left: targetScroll, behavior: 'smooth' });
+        setTimeout(updateActiveDot, 150);
+      }
+
+      // scroll event
+      let ticking = false;
+      carousel.addEventListener('scroll', () => {
+        if (!ticking) {
+          window.requestAnimationFrame(() => {
+            updateActiveDot();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      });
+
+      // dot click
+      dots.forEach((dot, idx) => {
+        dot.addEventListener('click', () => scrollToSlide(idx));
+      });
+
+      // initial
+      window.addEventListener('load', () => {
+        setTimeout(updateActiveDot, 100);
+      });
+      updateActiveDot();
+    })();
+  </script>
+</body>
+</html>

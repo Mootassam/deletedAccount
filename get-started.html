@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>LUXURY • DRIVE BEYOND</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #0a0a0a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .phone-frame {
+      max-width: 430px;
+      width: 100%;
+      height: 100vh;
+      background: #000;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(212, 175, 55, 0.25) inset;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .carousel {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .slides-wrapper {
+      display: flex;
+      height: 100%;
+      width: 100%;
+      transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .slide {
+      flex: 0 0 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center 30%;
+      background-repeat: no-repeat;
+      will-change: transform;
+    }
+
+    .carousel::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        125deg,
+        rgba(0, 0, 0, 0.2) 0%,
+        rgba(0, 0, 0, 0.5) 40%,
+        rgba(212, 175, 55, 0.18) 80%,
+        rgba(0, 0, 0, 0.8) 100%
+      );
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* ========= GET STARTED BUTTON – refined static elegance ========= */
+    .get-started {
+      position: absolute;
+      bottom: 90px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 20;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      /* no animations, no hover scaling – pure static luxury */
+    }
+
+    .arrow-circle {
+      width: 68px;
+      height: 68px;
+      background: rgba(10, 10, 10, 0.45);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+      border: 1.5px solid rgba(212, 175, 55, 0.9);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 34px;
+      color: #d4af37;                /* warm gold */
+      box-shadow: 0 8px 18px -6px rgba(0, 0, 0, 0.7);
+      margin-bottom: 12px;
+      line-height: 1;
+      transition: none;              /* explicitly remove any hover transition */
+    }
+
+    .get-started span {
+      font-family: 'Playfair Display', serif;
+      font-size: 15px;
+      font-weight: 400;
+      letter-spacing: 4.5px;
+      text-transform: uppercase;
+      color: #ffffff;
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+      background: rgba(0, 0, 0, 0.25);
+      backdrop-filter: blur(2px);
+      padding: 5px 20px;
+      border-radius: 30px;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      transition: none;
+    }
+
+    /* no hover effects – pure static */
+
+    /* ========= DOTS NAVIGATION ========= */
+    .dots-container {
+      position: absolute;
+      bottom: 28px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      z-index: 25;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.35);
+      backdrop-filter: blur(2px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+    }
+
+    .dot.active {
+      background: #d4af37;
+      transform: scale(1.5);
+      border-color: #fff9e6;
+      box-shadow: 0 0 15px #ffd966, 0 0 5px #d4af37;
+    }
+  </style>
+</head>
+<body>
+  <div class="phone-frame">
+    <div class="carousel">
+
+      <!-- sliding images wrapper (same luxury supercars) -->
+      <div class="slides-wrapper" id="slidesWrapper">
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?w=900&auto=format&fit=crop&q=80');"></div>
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1592198084033-ade6c5cb9e8f?w=900&auto=format&fit=crop&q=80');"></div>
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=900&auto=format&fit=crop&q=80');"></div>
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1622194995826-7655bb1f71c7?w=900&auto=format&fit=crop&q=80');"></div>
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1614200179396-2bdb77ebf81b?w=900&auto=format&fit=crop&q=80');"></div>
+      </div>
+
+      <!-- refined static GET STARTED button (no animations) -->
+      <div class="get-started" id="getStartedBtn" role="button" tabindex="0">
+        <div class="arrow-circle">▼</div>
+        <span>GET STARTED</span>
+      </div>
+
+      <!-- dots injected by JS -->
+      <div class="dots-container" id="dotsContainer"></div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      const wrapper = document.getElementById('slidesWrapper');
+      const slides = document.querySelectorAll('.slide');
+      const dotsContainer = document.getElementById('dotsContainer');
+      const getStartedBtn = document.getElementById('getStartedBtn');
+
+      if (!wrapper || !slides.length || !dotsContainer) return;
+
+      const slideCount = slides.length;
+      let currentIndex = 0;
+      let autoPlayInterval = null;
+
+      function createDots() {
+        dotsContainer.innerHTML = '';
+        for (let i = 0; i < slideCount; i++) {
+          const dot = document.createElement('span');
+          dot.classList.add('dot');
+          dot.dataset.index = i;
+          dot.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const idx = parseInt(this.dataset.index);
+            goToSlide(idx);
+            resetAutoPlay();
+          });
+          dotsContainer.appendChild(dot);
+        }
+        updateActiveDot(currentIndex);
+      }
+
+      function updateActiveDot(index) {
+        const dots = document.querySelectorAll('.dot');
+        dots.forEach((dot, i) => {
+          if (i === index) dot.classList.add('active');
+          else dot.classList.remove('active');
+        });
+      }
+
+      function goToSlide(index) {
+        if (index < 0) index = slideCount - 1;
+        if (index >= slideCount) index = 0;
+        currentIndex = index;
+        wrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
+        updateActiveDot(currentIndex);
+      }
+
+      function nextSlide() {
+        goToSlide((currentIndex + 1) % slideCount);
+      }
+
+      function startAutoPlay(intervalMs = 4200) {
+        if (autoPlayInterval) clearInterval(autoPlayInterval);
+        autoPlayInterval = setInterval(nextSlide, intervalMs);
+      }
+
+      function resetAutoPlay() {
+        if (autoPlayInterval) {
+          clearInterval(autoPlayInterval);
+          startAutoPlay(4500);
+        }
+      }
+
+      createDots();
+      goToSlide(0);
+      startAutoPlay(4200);
+
+      // Get started button – discreet feedback without hover animation
+      if (getStartedBtn) {
+        getStartedBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          // elegant, minimal toast
+          const toast = document.createElement('div');
+          toast.textContent = '✦  WELCOME  ✦';
+          toast.style.position = 'absolute';
+          toast.style.bottom = '180px';
+          toast.style.left = '50%';
+          toast.style.transform = 'translateX(-50%)';
+          toast.style.backgroundColor = 'rgba(10,10,10,0.8)';
+          toast.style.backdropFilter = 'blur(8px)';
+          toast.style.color = '#d4af37';
+          toast.style.padding = '10px 28px';
+          toast.style.borderRadius = '40px';
+          toast.style.fontFamily = "'Playfair Display', serif";
+          toast.style.letterSpacing = '3px';
+          toast.style.fontSize = '15px';
+          toast.style.border = '1px solid #d4af37';
+          toast.style.boxShadow = '0 10px 20px -8px black';
+          toast.style.zIndex = '999';
+          toast.style.whiteSpace = 'nowrap';
+          toast.style.maxWidth = '90%';
+          toast.style.textAlign = 'center';
+          document.querySelector('.carousel').appendChild(toast);
+
+          setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transition = 'opacity 0.5s';
+            setTimeout(() => toast.remove(), 600);
+          }, 1500);
+        });
+      }
+
+      // pause autoplay on hover/touch for refined control
+      const carousel = document.querySelector('.carousel');
+      if (carousel) {
+        carousel.addEventListener('mouseenter', () => clearInterval(autoPlayInterval));
+        carousel.addEventListener('mouseleave', () => startAutoPlay(4500));
+        carousel.addEventListener('touchstart', () => clearInterval(autoPlayInterval));
+        carousel.addEventListener('touchend', () => startAutoPlay(4500));
+      }
+    })();
+  </script>
+</body>
+</html>

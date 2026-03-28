@@ -1,0 +1,110 @@
+.app__header {
+  background-color: #fff;
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  align-self: center;
+  align-content: center;
+  justify-content: space-between;
+  padding-left: 5%;
+  padding-right: 5%;
+  color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+}
+
+.header__search {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  align-items: flex-end;
+  align-self: flex-end;
+  justify-content: flex-end;
+}
+
+.children__content {
+  align-items: center;
+  justify-content: center;
+  max-width: 430px;
+  margin: auto;
+  background-color: #fff;
+  min-height: 100dvh;
+  height: 100%;
+
+}
+
+.page__name {
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+/* styles the tabbarBottom */
+.tabbottomNavigator {
+  position: fixed;
+  background-color: #f8f8f8ff;
+  width: auto;
+  height: 60px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  z-index: 10;
+  bottom: 0;
+  max-width: 430px;
+  margin: auto;
+  left: 0;
+  right: 0;
+
+  width: 100%;
+  max-width: 430px;
+}
+
+
+
+
+
+.tabbottomNavigator img {
+  height: 26px;
+  width: 30px;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+.text__link {
+  color: #b1b4c3;
+  font-size: 14px;
+}
+
+.active {
+  color: #93B958 important;
+}
+
+.singleTab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  max-width: 30px;
+  text-align: center;
+}
+
+.left__header {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+/* stylign the company and the detaisl  */
+
+.detaill__company {
+  background-color: #fff;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 10px;
+}

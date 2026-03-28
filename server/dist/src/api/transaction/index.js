@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = (app) => {
+    app.post(`/tenant/:tenantId/transaction`, require("./transactionCreate").default);
+    app.put(`/tenant/:tenantId/transaction/:id`, require("./transactionUpdate").default);
+    app.post(`/tenant/:tenantId/transaction/import`, require("./transactionImport").default);
+    app.post(`/tenant/:tenantId/transactionStatus`, require("./transactionStatus").default);
+    app.delete(`/tenant/:tenantId/transaction`, require("./transactionDestroy").default);
+    app.get(`/tenant/:tenantId/transaction/autocomplete`, require("./transactionAutocomplete").default);
+    app.get(`/tenant/:tenantId/transaction`, require("./transactionList").default);
+    app.get(`/tenant/:tenantId/transaction/byUser`, require("./transactionByUser").default);
+    app.get(`/tenant/:tenantId/transaction/:id`, require("./transactionFind").default);
+};
+//# sourceMappingURL=index.js.map

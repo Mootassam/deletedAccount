@@ -12,7 +12,7 @@ const authAxios = Axios.create({
 
 
   // demo
-  baseURL:"http://159.198.43.161:8082/api/",
+  baseURL:"http://159.198.70.147:8082/api/",
   //Local
   // baseURL: 'http://localhost:8080/api/',
 

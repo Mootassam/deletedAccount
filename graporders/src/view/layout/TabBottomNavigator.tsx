@@ -9,18 +9,18 @@ function TabBottomNavigator() {
 
   const tabs = [
     {
-      icon: "fas fa-home",
+      icon: "fas fa-car-side", // Changed from home to car
       path: "/",
       name: i18n('pages.tabBottomNavigator.home'),
     },
     {
-      icon: "fas fa-star",
-      path: "/grap",      // adjust to your route
+      icon: "fas fa-tachometer-alt", // Changed from star to speedometer (racing theme)
+      path: "/grap",
       name: i18n('pages.tabBottomNavigator.starting'),
     },
     {
-      icon: "fas fa-user",
-      path: "/profile",     // adjust to your route
+      icon: "fas fa-user-astronaut", // Changed from user to driver/astronaut theme
+      path: "/profile",
       name: i18n('pages.tabBottomNavigator.profile'),
     },
   ];
@@ -36,12 +36,12 @@ function TabBottomNavigator() {
           display: flex;
           justify-content: space-around;
           align-items: center;
-          background: rgba(10, 10, 10, 0.8);
-          backdrop-filter: blur(12px);
+          background: rgba(10, 10, 10, 0.85);
+          backdrop-filter: blur(16px);
           border-top: 1px solid rgba(212, 175, 55, 0.3);
-          padding: 8px 0 12px 0;
+          padding: 10px 0 16px 0;
           z-index: 1000;
-          box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+          box-shadow: 0 -8px 25px rgba(0, 0, 0, 0.5);
         }
 
         .singleTab {
@@ -49,32 +49,114 @@ function TabBottomNavigator() {
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          gap: 4px;
-          padding: 4px 12px;
-          border-radius: 30px;
-          transition: background 0.2s;
+          gap: 6px;
+          padding: 6px 16px;
+          border-radius: 40px;
+          transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+          position: relative;
+        }
+
+        .singleTab::before {
+          content: '';
+          position: absolute;
+          bottom: -4px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 0;
+          height: 2px;
+          background: linear-gradient(90deg, #d4af37, #b8960f);
+          transition: width 0.2s ease;
+        }
+
+        .tabbottomNavigator a:hover .singleTab::before {
+          width: 30px;
         }
 
         .singleTab i {
-          font-size: 22px;
-          transition: color 0.2s, transform 0.1s;
+          font-size: 24px;
+          transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .singleTab span {
-          font-size: 12px;
-          font-weight: 500;
-          letter-spacing: 0.3px;
-          transition: color 0.2s;
+          font-size: 11px;
+          font-weight: 600;
+          letter-spacing: 0.5px;
+          transition: all 0.2s;
+          text-transform: uppercase;
         }
 
-        .singleTab:hover i {
-          transform: scale(1.1);
+        .tabbottomNavigator a:hover .singleTab i {
+          transform: translateY(-3px) scale(1.1);
         }
 
-        /* active styles are applied via inline style on the Link */
+        .tabbottomNavigator a:hover .singleTab span {
+          transform: translateY(-1px);
+        }
+
+        /* Active tab indicator animation */
+        .tabbottomNavigator a.active-tab .singleTab i {
+          animation: pulse 0.3s ease;
+        }
+
+        @keyframes pulse {
+          0% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.2);
+          }
+          100% {
+            transform: scale(1);
+          }
+        }
+
+        /* tabbottomNavigator a styles */
         .tabbottomNavigator a {
           text-decoration: none;
-          color: inherit; /* color controlled by inline style */
+          color: inherit;
+          transition: all 0.2s;
+          flex: 1;
+          display: flex;
+          justify-content: center;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+          .tabbottomNavigator {
+            padding: 8px 0 14px 0;
+          }
+          
+          .singleTab {
+            padding: 4px 12px;
+            gap: 4px;
+          }
+          
+          .singleTab i {
+            font-size: 20px;
+          }
+          
+          .singleTab span {
+            font-size: 10px;
+            letter-spacing: 0.3px;
+          }
+        }
+
+        /* For tablets */
+        @media (min-width: 481px) and (max-width: 768px) {
+          .singleTab i {
+            font-size: 22px;
+          }
+          
+          .singleTab span {
+            font-size: 11px;
+          }
+        }
+
+        /* Safe area for notched devices */
+        @supports (padding-bottom: env(safe-area-inset-bottom)) {
+          .tabbottomNavigator {
+            padding-bottom: calc(12px + env(safe-area-inset-bottom));
+          }
         }
       `}</style>
 
@@ -85,8 +167,9 @@ function TabBottomNavigator() {
             <Link
               key={index}
               to={item.path}
+              className={active ? "active-tab" : ""}
               style={{
-                color: active ? "#d4af37" : "rgba(255,255,255,0.6)",
+                color: active ? "#d4af37" : "rgba(255,255,255,0.65)",
               }}
             >
               <div className="singleTab">

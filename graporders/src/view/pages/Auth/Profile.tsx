@@ -30,7 +30,6 @@ function Profile() {
   const [recharge, setRecharge] = useState(false);
   const [deposit, setDeposit] = useState(false);
   const [showReputation, setShowReputation] = useState(false);
-  // NEW: state for verification modal
   const [showVerificationModal, setShowVerificationModal] = useState(false);
 
   const referenceCodeRef = useRef(null);
@@ -79,7 +78,6 @@ function Profile() {
     }
   };
 
-  // Helper to mask phone number
   const getMaskedPhone = () => {
     const phone = currentUser?.phone || "567***229";
     if (phone && phone.length > 6) {
@@ -90,7 +88,6 @@ function Profile() {
 
   const userScore = currentUser?.score || 0;
 
-  // Menu items – all icons replaced with Font Awesome car‑themed alternatives
   const menuItems = {
     main: [
       {
@@ -98,7 +95,6 @@ function Profile() {
         name: i18n('pages.profile.recharge'),
         action: () => goto("/deposit"),
       },
-
       {
         icon: "fas fa-arrow-up",
         name: i18n('pages.profile.withdraw'),
@@ -171,7 +167,6 @@ function Profile() {
         name: i18n('pages.actions.company'),
         action: () => goto("/company"),
       },
-
       {
         icon: "fas fa-sign-out-alt",
         name: i18n('pages.profile.logout'),
@@ -184,7 +179,6 @@ function Profile() {
     <div className="profile-container">
       <SubHeader title={i18n('pages.profile.title')} path="/profile" />
 
-      {/* User Info Section with car‑themed background */}
       <div className="user-info-section">
         <div className="user-avatar">
           <FormProvider {...form}>
@@ -213,29 +207,29 @@ function Profile() {
         </div>
       </div>
 
-      {/* ========== NEW: Verification Status Card ========== */}
       <div className="verification-card">
         <div className="verification-icon">
-          <i className="fas fa-exclamation-triangle"></i>
+          <i className="fas fa-shield-alt"></i>
         </div>
         <div className="verification-content">
           <div className="verification-title">
             {i18n('pages.profile.verifiedStatus.notVerified')}
           </div>
-
+          <div className="verification-text">
+            Verify your identity to unlock full access
+          </div>
         </div>
         <Link to="/" style={{ textDecoration: 'none' }} className="verification-button">
-
-
           {i18n('pages.profile.verifyButton')}
         </Link>
       </div>
 
-      {/* Menu Sections */}
       <div className="menu-sections">
-        {/* Main Function - Horizontal Tiles */}
         <div className="menu-section">
-          <div className="section-title">{i18n('pages.profile.mainFunction')}</div>
+          <div className="section-title">
+            <i className="fas fa-gem" style={{ marginRight: '8px', fontSize: '16px' }}></i>
+            {i18n('pages.profile.mainFunction')}
+          </div>
           <div className="main-function-items">
             {menuItems.main.map((item, index) => (
               <div
@@ -252,9 +246,11 @@ function Profile() {
           </div>
         </div>
 
-        {/* Other Function - Vertical List */}
         <div className="menu-section">
-          <div className="section-title">{i18n('pages.profile.otherFunction')}</div>
+          <div className="section-title">
+            <i className="fas fa-list-ul" style={{ marginRight: '8px', fontSize: '16px' }}></i>
+            {i18n('pages.profile.otherFunction')}
+          </div>
           <div className="section-items">
             {menuItems.other.map((item, index) => (
               <div
@@ -266,21 +262,20 @@ function Profile() {
                   <i className={item.icon}></i>
                   <span>{item.name}</span>
                 </div>
-                <i className="fa fa-arrow-right item-arrow"></i>
+                <i className="fas fa-chevron-right item-arrow"></i>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Recharge Modal */}
       {recharge && (
         <div className="modal-overlay">
           <div className="modal-content">
             <div className="modal-header">
               <div className="modal-title">{i18n('pages.profile.rechargeModal.title')}</div>
               <i
-                className="fa fa-close modal-close"
+                className="fas fa-times modal-close"
                 onClick={() => setRecharge(false)}
               />
             </div>
@@ -297,17 +292,13 @@ function Profile() {
         </div>
       )}
 
-      {/* Deposit Modal */}
-
-
-      {/* Reputation Modal */}
       {showReputation && (
         <div className="modal-overlay" onClick={() => setShowReputation(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <div className="modal-title">{i18n('pages.profile.reputation.title')}</div>
               <i
-                className="fa fa-close modal-close"
+                className="fas fa-times modal-close"
                 onClick={() => setShowReputation(false)}
               />
             </div>
@@ -332,14 +323,13 @@ function Profile() {
         </div>
       )}
 
-      {/* ========== NEW: Verification Modal ========== */}
       {showVerificationModal && (
         <div className="modal-overlay" onClick={() => setShowVerificationModal(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <div className="modal-title">{i18n('pages.profile.verificationModal.title')}</div>
               <i
-                className="fa fa-close modal-close"
+                className="fas fa-times modal-close"
                 onClick={() => setShowVerificationModal(false)}
               />
             </div>
@@ -359,53 +349,66 @@ function Profile() {
         </div>
       )}
 
-      {/* Luxury Car Theme Styles */}
       <style>{`
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+
+           body {
+          background-color: #0a0a0a;
+        }
+
         .profile-container {
-          background: #0a0a0a;
+          background: linear-gradient(135deg, #0a0a0a 0%, #0f0f0f 100%);
           min-height: 100vh;
           color: #ffffff;
           font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
-        /* User Info Section with subtle car pattern */
+        /* User Info Section */
         .user-info-section {
-          background: linear-gradient(145deg, #1a1a1a, #0a0a0a);
+          background: linear-gradient(145deg, #0f0f0f, #0a0a0a);
           border-bottom: 1px solid rgba(212, 175, 55, 0.3);
           min-height: 160px;
           width: 100%;
           display: flex;
           align-items: center;
           gap: 16px;
-          padding: 20px 16px;
-          box-sizing: border-box;
+          padding: 24px 20px;
           position: relative;
           overflow: hidden;
         }
 
-        .user-info-section::after {
+        .user-info-section::before {
           content: '';
           position: absolute;
-          top: 0;
-          right: 0;
-          bottom: 0;
-          left: 0;
-          background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.05"><path d="M20 40 L30 20 L45 25 L55 10 L70 20 L80 35 L70 50 L55 60 L40 55 L25 50 Z" fill="%23d4af37"/></svg>');
-          background-size: 80px 80px;
+          top: -50%;
+          right: -20%;
+          width: 200px;
+          height: 200px;
+          background: radial-gradient(circle, rgba(212, 175, 55, 0.05), transparent);
+          border-radius: 50%;
           pointer-events: none;
-          z-index: 1;
         }
 
         .user-avatar {
-          width: 70px;
-          height: 70px;
+          width: 80px;
+          height: 80px;
           border-radius: 50%;
           overflow: hidden;
-          background: #1e1e1e;
+          background: linear-gradient(135deg, #1e1e1e, #0a0a0a);
           border: 2px solid #d4af37;
           flex-shrink: 0;
           z-index: 2;
-          box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+          box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+          transition: all 0.3s ease;
+        }
+
+        .user-avatar:hover {
+          transform: scale(1.05);
+          box-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
         }
 
         .user-avatar .images-form-item {
@@ -417,7 +420,6 @@ function Profile() {
           width: 100%;
           height: 100%;
           object-fit: cover;
-          filter: grayscale(50%);
         }
 
         .user-details {
@@ -426,37 +428,41 @@ function Profile() {
         }
 
         .user-phone {
-          font-size: 20px;
-          font-weight: 600;
-          margin-bottom: 4px;
+          font-size: 22px;
+          font-weight: 700;
+          margin-bottom: 6px;
           color: #ffffff;
-          letter-spacing: 0.5px;
+          letter-spacing: -0.3px;
+          font-family: 'Playfair Display', serif;
         }
 
         .user-uid {
-          font-size: 14px;
+          font-size: 13px;
           color: rgba(255,255,255,0.6);
-          margin-bottom: 8px;
+          margin-bottom: 10px;
+          letter-spacing: 0.3px;
         }
 
         .invitation-row {
           display: flex;
           align-items: center;
           gap: 8px;
-          font-size: 14px;
+          font-size: 13px;
           width: fit-content;
           background: rgba(212,175,55,0.1);
-          padding: 4px 12px 4px 8px;
+          padding: 6px 14px 6px 12px;
           border-radius: 40px;
           border: 1px solid rgba(212,175,55,0.3);
+          backdrop-filter: blur(8px);
         }
 
         .invitation-label {
-          color: rgba(255,255,255,0.8);
+          color: rgba(255,255,255,0.7);
+          font-weight: 500;
         }
 
         .invitation-code {
-          font-family: monospace;
+          font-family: 'Monaco', monospace;
           font-weight: 600;
           letter-spacing: 0.5px;
           color: #d4af37;
@@ -466,38 +472,51 @@ function Profile() {
           cursor: pointer;
           color: #d4af37;
           font-size: 14px;
-          transition: opacity 0.2s;
+          transition: all 0.2s;
         }
 
         .copy-icon:hover {
           opacity: 0.8;
+          transform: scale(1.1);
         }
 
-        /* ========== NEW: Verification Card Styles ========== */
+        /* Verification Card */
         .verification-card {
           display: flex;
           align-items: center;
           gap: 16px;
-          background: rgba(212, 175, 55, 0.1);
-          backdrop-filter: blur(8px);
+          background: rgba(15, 15, 15, 0.8);
+          backdrop-filter: blur(12px);
           border: 1px solid rgba(212, 175, 55, 0.3);
-          border-radius: 20px;
-          padding: 16px 18px;
-          margin: 16px 16px 24px 16px;
+          border-radius: 24px;
+          padding: 18px 20px;
+          margin: 20px 20px 28px 20px;
           box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+          transition: all 0.3s ease;
+        }
+
+        .verification-card:hover {
+          border-color: #d4af37;
+          transform: translateY(-2px);
+          box-shadow: 0 12px 28px rgba(212, 175, 55, 0.15);
         }
 
         .verification-icon {
-          width: 48px;
-          height: 48px;
+          width: 52px;
+          height: 52px;
           border-radius: 50%;
-          background: rgba(212, 175, 55, 0.2);
+          background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.05));
           display: flex;
           align-items: center;
           justify-content: center;
           color: #d4af37;
           font-size: 24px;
           flex-shrink: 0;
+          transition: all 0.3s;
+        }
+
+        .verification-card:hover .verification-icon {
+          transform: scale(1.1);
         }
 
         .verification-content {
@@ -506,14 +525,15 @@ function Profile() {
 
         .verification-title {
           font-size: 16px;
-          font-weight: 600;
+          font-weight: 700;
           color: #ffffff;
-          margin-bottom: 4px;
+          margin-bottom: 6px;
+          letter-spacing: -0.2px;
         }
 
         .verification-text {
-          font-size: 13px;
-          color: rgba(255,255,255,0.7);
+          font-size: 12px;
+          color: rgba(255,255,255,0.6);
           line-height: 1.4;
         }
 
@@ -521,43 +541,47 @@ function Profile() {
           background: linear-gradient(145deg, #d4af37, #b8960f);
           border: none;
           border-radius: 30px;
-          padding: 10px 18px;
+          padding: 10px 20px;
           color: #0a0a0a;
-          font-size: 14px;
-          font-weight: 600;
+          font-size: 13px;
+          font-weight: 700;
           cursor: pointer;
-          transition: transform 0.15s, box-shadow 0.2s;
+          transition: all 0.2s;
           white-space: nowrap;
           border: 1px solid rgba(255,255,255,0.2);
           box-shadow: 0 4px 12px rgba(212,175,55,0.3);
+          letter-spacing: 0.3px;
         }
 
         .verification-button:hover {
-          transform: scale(1.02);
+          transform: translateY(-2px);
           background: linear-gradient(145deg, #e0b84d, #c9a227);
-          box-shadow: 0 6px 16px rgba(212,175,55,0.5);
+          box-shadow: 0 8px 20px rgba(212,175,55,0.5);
         }
 
         .verification-button:active {
-          transform: scale(0.98);
+          transform: translateY(0);
         }
 
         /* Menu Sections */
         .menu-sections {
           display: flex;
           flex-direction: column;
-          gap: 24px;
-          padding: 30px 16px 20px 16px;
+          gap: 28px;
+          padding: 0 20px 32px 20px;
         }
 
         .section-title {
           font-size: 18px;
-          font-weight: 600;
+          font-weight: 700;
           letter-spacing: 0.5px;
           color: #d4af37;
-          padding: 0 0 12px 0;
-          margin-bottom: 16px;
-          border-bottom: 1px solid rgba(212,175,55,0.2);
+          padding: 0 0 14px 0;
+          margin-bottom: 18px;
+          border-bottom: 2px solid rgba(212,175,55,0.2);
+          display: flex;
+          align-items: center;
+          font-family: 'Playfair Display', serif;
         }
 
         /* Main Function - Horizontal Tiles */
@@ -574,43 +598,52 @@ function Profile() {
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 8px;
+          gap: 10px;
           cursor: pointer;
           border-radius: 20px;
-          transition: background 0.2s, transform 0.1s;
+          padding: 8px 4px;
+          transition: all 0.2s;
         }
 
         .main-function-item:hover {
-          background: rgba(212,175,55,0.1);
-          border-color: #d4af37;
-          transform: translateY(-2px);
+          transform: translateY(-4px);
         }
 
         .main-icon-circle {
-          width: 52px;
-          height: 52px;
+          width: 56px;
+          height: 56px;
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
-          background: rgba(212,175,55,0.15);
+          background: linear-gradient(135deg, rgba(212,175,55,0.15), rgba(212,175,55,0.05));
           color: #d4af37;
           font-size: 24px;
           border: 1px solid rgba(212,175,55,0.4);
+          transition: all 0.3s;
+        }
+
+        .main-function-item:hover .main-icon-circle {
+          background: linear-gradient(135deg, rgba(212,175,55,0.25), rgba(212,175,55,0.1));
+          transform: scale(1.1);
+          border-color: #d4af37;
+          box-shadow: 0 0 15px rgba(212,175,55,0.3);
         }
 
         .main-item-label {
-          font-size: 13px;
-          font-weight: 500;
+          font-size: 12px;
+          font-weight: 600;
           text-align: center;
-          color: rgba(255,255,255,0.9);
+          color: rgba(255,255,255,0.85);
+          letter-spacing: 0.2px;
         }
 
         /* Other Function - Vertical List */
         .section-items {
           display: flex;
           flex-direction: column;
-          background: rgba(255,255,255,0.02);
+          background: rgba(15, 15, 15, 0.6);
+          backdrop-filter: blur(10px);
           border-radius: 24px;
           border: 1px solid rgba(212,175,55,0.2);
           overflow: hidden;
@@ -620,9 +653,9 @@ function Profile() {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 16px 18px;
+          padding: 16px 20px;
           cursor: pointer;
-          transition: background 0.2s;
+          transition: all 0.2s;
           border-bottom: 1px solid rgba(212,175,55,0.1);
           color: #ffffff;
         }
@@ -632,7 +665,8 @@ function Profile() {
         }
 
         .menu-item:hover {
-          background: rgba(212,175,55,0.05);
+          background: rgba(212,175,55,0.08);
+          padding-left: 24px;
         }
 
         .item-left {
@@ -646,16 +680,27 @@ function Profile() {
           color: #d4af37;
           font-size: 18px;
           text-align: center;
+          transition: transform 0.2s;
+        }
+
+        .menu-item:hover .item-left i {
+          transform: scale(1.1);
         }
 
         .item-left span {
           font-size: 15px;
-          color: #ffffff;
+          font-weight: 500;
+          color: rgba(255,255,255,0.9);
         }
 
         .item-arrow {
-          color: rgba(212,175,55,0.6);
-          font-size: 14px;
+          color: #d4af37;
+          font-size: 12px;
+          transition: transform 0.2s;
+        }
+
+        .menu-item:hover .item-arrow {
+          transform: translateX(4px);
         }
 
         /* Modal Styles */
@@ -665,8 +710,8 @@ function Profile() {
           left: 0;
           width: 100%;
           height: 100%;
-          background: rgba(0,0,0,0.8);
-          backdrop-filter: blur(5px);
+          background: rgba(0,0,0,0.85);
+          backdrop-filter: blur(8px);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -674,86 +719,113 @@ function Profile() {
         }
 
         .modal-content {
-          background: #1a1a1a;
+          background: linear-gradient(145deg, #0f0f0f, #0a0a0a);
           color: #ffffff;
-          border-radius: 28px;
+          border-radius: 32px;
           width: 90%;
           max-width: 340px;
-          padding: 24px;
-          box-shadow: 0 25px 50px rgba(0,0,0,0.7), 0 0 0 1px rgba(212,175,55,0.3);
+          padding: 28px;
+          box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(212,175,55,0.3);
           border: 1px solid rgba(212,175,55,0.3);
+          animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+          from {
+            opacity: 0;
+            transform: translateY(-30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
 
         .modal-header {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          margin-bottom: 16px;
+          margin-bottom: 20px;
         }
 
         .modal-title {
-          font-size: 20px;
-          font-weight: 600;
+          font-size: 22px;
+          font-weight: 700;
           color: #d4af37;
+          font-family: 'Playfair Display', serif;
         }
 
         .modal-close {
           cursor: pointer;
-          font-size: 22px;
+          font-size: 20px;
           color: rgba(255,255,255,0.6);
-          transition: color 0.2s;
+          transition: all 0.2s;
+          width: 32px;
+          height: 32px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 50%;
         }
 
         .modal-close:hover {
           color: #d4af37;
+          background: rgba(212,175,55,0.1);
+          transform: rotate(90deg);
         }
 
         .modal-text {
           margin-bottom: 24px;
           line-height: 1.6;
           color: rgba(255,255,255,0.8);
+          font-size: 14px;
         }
 
         .modal-confirm {
-          background: #d4af37;
+          background: linear-gradient(145deg, #d4af37, #b8960f);
           color: #0a0a0a;
           text-align: center;
           padding: 14px;
           border-radius: 40px;
-          font-weight: 600;
+          font-weight: 700;
           cursor: pointer;
-          transition: background 0.2s, transform 0.1s;
+          transition: all 0.2s;
           border: none;
+          font-size: 14px;
+          letter-spacing: 0.5px;
         }
 
         .modal-confirm:hover {
-          background: #e0b84d;
-          transform: scale(1.02);
+          transform: translateY(-2px);
+          box-shadow: 0 8px 20px rgba(212,175,55,0.4);
+          background: linear-gradient(145deg, #e0b84d, #c9a227);
         }
 
         /* Reputation modal */
         .reputation-score {
-          font-size: 28px;
-          font-weight: bold;
+          font-size: 48px;
+          font-weight: 800;
           text-align: center;
-          margin: 16px 0 8px;
+          margin: 16px 0 12px;
           color: #d4af37;
+          font-family: 'Playfair Display', serif;
         }
 
         .progress-labels {
           display: flex;
           justify-content: space-between;
-          font-size: 13px;
+          font-size: 12px;
           color: rgba(255,255,255,0.5);
-          margin-bottom: 4px;
+          margin-bottom: 6px;
           padding: 0 4px;
+          font-weight: 500;
         }
 
         .progress-bar-container {
           height: 8px;
-          background: #2a2a2a;
+          background: rgba(255,255,255,0.1);
           border-radius: 4px;
-          margin: 8px 0 16px;
+          margin: 8px 0 20px;
           overflow: hidden;
           position: relative;
           border: 1px solid rgba(212,175,55,0.3);
@@ -764,17 +836,7 @@ function Profile() {
           background: linear-gradient(90deg, #d4af37, #f5d742);
           border-radius: 4px;
           transition: width 0.3s ease;
-        }
-
-        .progress-bar-container::after {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 80%;
-          width: 2px;
-          height: 100%;
-          background: #d4af37;
-          opacity: 0.5;
+          position: relative;
         }
 
         .reputation-description {
@@ -786,47 +848,85 @@ function Profile() {
         }
 
         /* Responsive */
-        @media (max-width: 400px) {
+        @media (max-width: 480px) {
           .user-info-section {
-            min-height: 140px;
-            padding: 16px 12px;
+            padding: 20px 16px;
+            gap: 12px;
           }
+          
+          .user-avatar {
+            width: 65px;
+            height: 65px;
+          }
+          
           .user-phone {
             font-size: 18px;
           }
+          
           .invitation-row {
-            font-size: 13px;
+            font-size: 11px;
+            padding: 4px 10px 4px 8px;
           }
-          .main-icon-circle {
-            width: 46px;
-            height: 46px;
+          
+          .verification-card {
+            margin: 16px 16px 24px 16px;
+            padding: 14px 16px;
+          }
+          
+          .verification-icon {
+            width: 44px;
+            height: 44px;
             font-size: 20px;
           }
-          .main-item-label {
-            font-size: 12px;
+          
+          .main-icon-circle {
+            width: 48px;
+            height: 48px;
+            font-size: 20px;
           }
+          
+          .main-item-label {
+            font-size: 11px;
+          }
+          
+          .menu-sections {
+            padding: 0 16px 28px 16px;
+          }
+          
           .menu-item {
             padding: 14px 16px;
           }
-          .verification-card {
-            padding: 14px 16px;
-            margin: 12px 12px 20px 12px;
+          
+          .item-left span {
+            font-size: 14px;
           }
-          .verification-icon {
-            width: 42px;
-            height: 42px;
+          
+          .modal-content {
+            padding: 24px;
+            margin: 0 16px;
+          }
+          
+          .modal-title {
             font-size: 20px;
           }
-          .verification-title {
-            font-size: 15px;
-          }
-          .verification-text {
-            font-size: 12px;
-          }
-          .verification-button {
-            padding: 8px 14px;
-            font-size: 13px;
-          }
+        }
+
+        /* Smooth scrollbar */
+        ::-webkit-scrollbar {
+          width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+          background: #1a1a1a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+          background: #d4af37;
+          border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+          background: #e0b84d;
         }
       `}</style>
     </div>

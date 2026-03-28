@@ -426,7 +426,7 @@ function Home() {
               <input type="text" placeholder="Car type (e.g. SUV, Convertible)" />
             </div>
           </div>
-          <Link className="search-btn remove__blue" to="/search">
+          <Link className="search-btn remove__blue" to="/grap">
             <span>Search Cars</span>
             <i className="fas fa-arrow-right" />
           </Link>

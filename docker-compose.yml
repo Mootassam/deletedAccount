@@ -50,7 +50,7 @@ services:
   web1:
     container_name: namles-web1
     build:
-      context: ./graborders
+      context: ./graporders
       dockerfile: Dockerfile
       args:
         - BUILDKIT_INLINE_CACHE=1
@@ -58,7 +58,7 @@ services:
       - "3018:80"
     restart: unless-stopped
     volumes:
-      - ./graborders:/app
+      - ./graporders:/app
       - /app/node_modules
     stdin_open: true
     environment:

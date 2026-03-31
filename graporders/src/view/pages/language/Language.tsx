@@ -7,7 +7,7 @@ function LanguagePage() {
   return (
     <div className="language-page-container">
       <SubHeader title={i18n('pages.language.title')} path="/profile" />
-      <div style={{ paddingTop: '20px' }}>
+      <div >
         <I18nSelect />
       </div>
     </div>

@@ -44,7 +44,7 @@ const en = {
   },
 
   app: {
-    title: "GoToMarketersers",
+    title: "Stellantis",
   },
 
   api: {
@@ -101,7 +101,7 @@ const en = {
       levels: "VIP Levels",
       chooseLevel: "Choose your level to maximize your earnings",
       welcome: "Welcome",
-      announcement: "Dear users, the GoToMarketersers platform is back to the best and normal, continue to earn as much as you can from the platform",
+      announcement: "Dear users, the stellantisplatform is back to the best and normal, continue to earn as much as you can from the platform",
       viewAllVIP: "View All VIP",
       showLess: "Show Less",
       // Action Buttons
@@ -431,7 +431,7 @@ const en = {
 
     grab: {
       title: "Rate & Stay",
-      description: "Search Off the Record takes you behind the scenes of GoToMarketers Search. Each episode reveals how we help people rate and discover hotels — from the comfort of home.",
+      description: "Search Off the Record takes you behind the scenes of GoToMarketers Search. Each episode reveals how we help people rate and discover Cars — from the comfort of home.",
       seeAllReviews: "See all reviews",
       searchNow: "Search Now",
       // Header Section
@@ -593,9 +593,9 @@ const en = {
     },
     marketsHome: {
       heroTitle: "🌙 Find your calm",
-      heroSubtitle: "Luxury hotels · private retreats",
+      heroSubtitle: "Luxury Cars · private retreats",
       search: {
-        destinationPlaceholder: "Destination, city, hotel",
+        destinationPlaceholder: "Destination, city, Car",
         checkIn: "Check-in",
         checkOut: "Check-out",
         guestsPlaceholder: "2 adults · 0 children",
@@ -626,15 +626,15 @@ const en = {
       accordion: {
         specialOrders: {
           title: "Regarding Special Orders",
-          content: "<p><strong>What is a \"Special Hotel Order\"?</strong></p><p>Special Hotel Orders are exclusive benefits offered by GoToMarketersers in collaboration with selected luxury hotels. These orders are rare and available only to high-level VIP members.</p><p>VIP members may receive Mystery Box rewards, which can include cash prizes and Special Hotel Orders, offering commissions ranging from 30 to 50 times the standard rate.</p>"
+          content: "<p><strong>What is a \"Special Car Order\"?</strong></p><p>Special Car Orders are exclusive benefits offered by stellantisin collaboration with selected luxury Cars. These orders are rare and available only to high-level VIP members.</p><p>VIP members may receive Mystery Box rewards, which can include cash prizes and Special Car Orders, offering commissions ranging from 30 to 50 times the standard rate.</p>"
         },
         platformRegulations: {
           title: "Platform Regulations",
-          content: "<p>To place hotel orders, go to the relevant page and click on \"Search\". Wait for a suitable order to appear, then proceed to complete the hotel order. Completing and withdrawing a hotel order typically takes around <strong>30 minutes</strong>.</p><p>All hotel orders are randomly assigned by the platform's matching engine and <strong>cannot be modified, cancelled, or skipped</strong>.</p><p>For hotel orders from different merchants, if more than <strong>15 minutes</strong> have passed without completing the deposit, you must contact customer support and confirm the deposit account details with the merchant.</p><p>The platform operates daily from <strong>9:00 AM to 9:00 PM</strong>, and members may submit hotel orders during these hours.</p><p>If your account is misused or accessed by someone else, please contact customer support immediately. The platform will take appropriate emergency action and may pursue legal proceedings.</p><p>If you place an order for hotel advertising, once the order is received, contact online customer support to verify the deposit status. Then, click the <strong>\"Submit\"</strong> button on the order page to complete the <strong>Premium Hotel Order</strong>.</p><p>If you withdraw more than 10.000 euro, an <strong>audit fee</strong> will be required for initial verification and security purposes. This fee may be withdrawn <strong>one hour after the verification is completed</strong>.</p><p><strong>Note:</strong> For further information, please contact the platform's online customer support.</p>"
+          content: "<p>To place Car orders, go to the relevant page and click on \"Search\". Wait for a suitable order to appear, then proceed to complete the Car order. Completing and withdrawing a Car order typically takes around <strong>30 minutes</strong>.</p><p>All Car orders are randomly assigned by the platform's matching engine and <strong>cannot be modified, cancelled, or skipped</strong>.</p><p>For Car orders from different merchants, if more than <strong>15 minutes</strong> have passed without completing the deposit, you must contact customer support and confirm the deposit account details with the merchant.</p><p>The platform operates daily from <strong>9:00 AM to 9:00 PM</strong>, and members may submit Car orders during these hours.</p><p>If your account is misused or accessed by someone else, please contact customer support immediately. The platform will take appropriate emergency action and may pursue legal proceedings.</p><p>If you place an order for Car advertising, once the order is received, contact online customer support to verify the deposit status. Then, click the <strong>\"Submit\"</strong> button on the order page to complete the <strong>Premium Car Order</strong>.</p><p>If you withdraw more than 10.000 euro, an <strong>audit fee</strong> will be required for initial verification and security purposes. This fee may be withdrawn <strong>one hour after the verification is completed</strong>.</p><p><strong>Note:</strong> For further information, please contact the platform's online customer support.</p>"
         },
         deposits: {
           title: "About Deposits",
-          content: "<p>Members can make deposits via their personal account page. Click on \"Deposit\", then select the designated customer service representative to proceed. Use the deposit account details provided by customer service to complete the transfer. Once the transfer is successful, please send a screenshot of the transaction as confirmation.</p><p>If you experience any issues during the deposit process that cannot be resolved, please contact the appropriate online customer service representative.</p><p>Due to the high volume of messages, it is essential to verify the platform's deposit account before making any payment. Please note that the platform updates its deposit account details daily.</p><p><strong>Note:</strong> Members should only make a deposit if their account balance is lower than the current price of the hotel order.</p><p>For any enquiries, please contact the platform's online customer service.</p>"
+          content: "<p>Members can make deposits via their personal account page. Click on \"Deposit\", then select the designated customer service representative to proceed. Use the deposit account details provided by customer service to complete the transfer. Once the transfer is successful, please send a screenshot of the transaction as confirmation.</p><p>If you experience any issues during the deposit process that cannot be resolved, please contact the appropriate online customer service representative.</p><p>Due to the high volume of messages, it is essential to verify the platform's deposit account before making any payment. Please note that the platform updates its deposit account details daily.</p><p><strong>Note:</strong> Members should only make a deposit if their account balance is lower than the current price of the Car order.</p><p>For any enquiries, please contact the platform's online customer service.</p>"
         },
         withdrawals: {
           title: "About Withdrawals",
@@ -642,7 +642,7 @@ const en = {
         },
         luxuryOrders: {
           title: "Regarding Luxury Orders",
-          content: "<p><strong>What is a \"Luxury Hotel Order\"?</strong></p><p>These orders serve as a form of advertising, designed to generate profit through promotional campaigns on hotel booking platforms. Luxury Hotel Orders assist merchants in gaining brand support with the aim of attracting a larger customer base.</p><p>Luxury Hotel Orders provide a benefit to all members, enabling them to earn additional commission. The objective for both suppliers and distributors is to allow members and agents to earn commissions ranging from 10 to 30 times the original amount.</p><p>Agents typically receive between 0 (minimum) and 2 (maximum) Luxury Hotel Orders per day, though this may vary.</p><p><strong>Note:</strong> If you are assigned a Luxury Hotel Order, all members are required to complete the task. The final status of the order will be reflected as a credit adjustment to the user's account. Any negative balance displayed represents the amount that must be deposited.</p>"
+          content: "<p><strong>What is a \"Luxury Car Order\"?</strong></p><p>These orders serve as a form of advertising, designed to generate profit through promotional campaigns on Car booking platforms. Luxury Car Orders assist merchants in gaining brand support with the aim of attracting a larger customer base.</p><p>Luxury Car Orders provide a benefit to all members, enabling them to earn additional commission. The objective for both suppliers and distributors is to allow members and agents to earn commissions ranging from 10 to 30 times the original amount.</p><p>Agents typically receive between 0 (minimum) and 2 (maximum) Luxury Car Orders per day, though this may vary.</p><p><strong>Note:</strong> If you are assigned a Luxury Car Order, all members are required to complete the task. The final status of the order will be reflected as a credit adjustment to the user's account. Any negative balance displayed represents the amount that must be deposited.</p>"
         }
       }
     },
@@ -1447,7 +1447,7 @@ const en = {
   },
 
   footer: {
-    copyright: "© {0} GoToMarketersers Digital Marketing",
+    copyright: "© {0} stellantisDigital Marketing",
   },
 
 

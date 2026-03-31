@@ -65,7 +65,7 @@ function Signin() {
       <div className="auth__card">
         <div className="auth__header">
           <div className="auth__icon">
-            <i className="fas fa-car"></i> {/* replaced hotel with car */}
+            <i className="fas fa-car"></i> {/* replaced Car with car */}
           </div>
           <h1 className="auth__title">{i18n('pages.auth.signin.welcomeBack')}</h1>
           <p className="auth__description">{i18n('pages.auth.signin.signinToAccount')}</p>

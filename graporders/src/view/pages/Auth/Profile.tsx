@@ -135,7 +135,7 @@ function Profile() {
       {
         icon: "fas fa-globe",
         name: i18n('pages.profile.officialWebsite'),
-        action: () => window.open("https://GoToMarketersers.com", "_blank"),
+        action: () => window.open("https://Stellantis.com", "_blank"),
       },
       {
         icon: "fas fa-certificate",
@@ -147,11 +147,11 @@ function Profile() {
         name: i18n('pages.profile.reputation.title'),
         action: () => setShowReputation(true),
       },
-      {
-        icon: "fas fa-calendar-alt",
-        name: i18n('pages.activities.title'),
-        action: () => goto("/activities"),
-      },
+      // {
+      //   icon: "fas fa-calendar-alt",
+      //   name: i18n('pages.activities.title'),
+      //   action: () => goto("/activities"),
+      // },
       {
         icon: "fas fa-crown",
         name: i18n('pages.vip.title'),

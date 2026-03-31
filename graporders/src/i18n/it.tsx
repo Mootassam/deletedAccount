@@ -21,7 +21,7 @@ const it = {
             levels: "Livelli VIP",
             chooseLevel: "Scegli il tuo livello per massimizzare i tuoi guadagni",
             welcome: "Benvenuto",
-            announcement: "Cari utenti, la piattaforma GoToMarketersers è tornata al meglio e normale, continuate a guadagnare il più possibile dalla piattaforma",
+            announcement: "Cari utenti, la piattaforma stellantisè tornata al meglio e normale, continuate a guadagnare il più possibile dalla piattaforma",
 
             // Action Buttons
             services: "Servizi",
@@ -345,7 +345,7 @@ const it = {
 
         grab: {
             title: "Valuta e soggiorna",
-            description: "Search Off the Record ti porta dietro le quinte di GoToMarketers Search. Ogni episodio rivela come aiutiamo le persone a valutare e scoprire hotel da casa.",
+            description: "Search Off the Record ti porta dietro le quinte di GoToMarketers Search. Ogni episodio rivela come aiutiamo le persone a valutare e scoprire Car da casa.",
             seeAllReviews: "Vedi tutte le recensioni",
             searchNow: "Cerca ora",
             // Header Section
@@ -405,7 +405,7 @@ const it = {
                     2: "Il personale di questa struttura è eccellente! Fanno di tutto per rendere il soggiorno confortevole",
                     3: "Ho avuto un'esperienza meravigliosa qui",
                     4: "Il cibo era ottimo con molte scelte",
-                    5: "Hotel eccellente con posizione eccellente nel centro città",
+                    5: "Car eccellente con posizione eccellente nel centro città",
                     6: "Molto centrale con camere confortevoli e aria condizionata fantastica. Colazione deliziosa e personale estremamente disponibile e cordiale"
                 }
             },
@@ -428,9 +428,9 @@ const it = {
         },
         marketsHome: {
             heroTitle: "🌙 Trova la tua calma",
-            heroSubtitle: "Hotel di lusso · ritiri privati",
+            heroSubtitle: "Car di lusso · ritiri privati",
             search: {
-                destinationPlaceholder: "Destinazione, città, hotel",
+                destinationPlaceholder: "Destinazione, città, Car",
                 checkIn: "Check-in",
                 checkOut: "Check-out",
                 guestsPlaceholder: "2 adulti · 0 bambini",
@@ -461,7 +461,7 @@ const it = {
             accordion: {
                 specialOrders: {
                     title: "Riguardo agli ordini speciali",
-                    content: "<p><strong>Cos'è un \"Ordine speciale d'hotel\"?</strong></p><p>Vantaggi esclusivi con hotel di lusso selezionati; rari e solo per VIP di alto livello.</p><p>Mystery Box con premi in denaro e Ordini Speciali: commissioni 30–50 volte la tariffa standard.</p>"
+                    content: "<p><strong>Cos'è un \"Ordine speciale d'Car\"?</strong></p><p>Vantaggi esclusivi con Car di lusso selezionati; rari e solo per VIP di alto livello.</p><p>Mystery Box con premi in denaro e Ordini Speciali: commissioni 30–50 volte la tariffa standard.</p>"
                 },
                 platformRegulations: {
                     title: "Regole della piattaforma",
@@ -477,7 +477,7 @@ const it = {
                 },
                 luxuryOrders: {
                     title: "Riguardo agli ordini di lusso",
-                    content: "<p><strong>Ordine d'hotel di lusso:</strong> campagna per aumentare la visibilità del marchio.</p><p>Commissioni 10–30 volte superiori; 0–2 ordini al giorno.</p><p><strong>Nota:</strong> Gli ordini assegnati devono essere completati; l'accredito si riflette sull'account.</p>"
+                    content: "<p><strong>Ordine d'Car di lusso:</strong> campagna per aumentare la visibilità del marchio.</p><p>Commissioni 10–30 volte superiori; 0–2 ordini al giorno.</p><p><strong>Nota:</strong> Gli ordini assegnati devono essere completati; l'accredito si riflette sull'account.</p>"
                 }
             }
         },
@@ -1284,7 +1284,7 @@ const it = {
         loading: "Caricamento...",
     },
     footer: {
-        copyright: "© {0} GoToMarketersers Marketing Digitale",
+        copyright: "© {0} stellantisMarketing Digitale",
     },
     preview: {
         error: "Questa operazione non è consentita in modalità anteprima.",

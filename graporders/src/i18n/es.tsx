@@ -4,7 +4,7 @@ import Withdraw from "src/view/pages/withdraw/Withdraw";
 
 const es = {
   app: {
-    title: "GoToMarketersers"
+    title: "Stellantis"
   },
   inputs: {
     username: "Nombre de usuario",
@@ -21,7 +21,7 @@ const es = {
       levels: "Niveles VIP",
       chooseLevel: "Elige tu nivel para maximizar tus ganancias",
       welcome: "Bienvenido",
-      announcement: "Estimados usuarios, la plataforma GoToMarketersers ha vuelto a la normalidad y a su mejor estado, continúen ganando tanto como puedan desde la plataforma",
+      announcement: "Estimados usuarios, la plataforma stellantisha vuelto a la normalidad y a su mejor estado, continúen ganando tanto como puedan desde la plataforma",
 
       // Action Buttons
       services: "Servicios",
@@ -341,7 +341,7 @@ const es = {
 
     grab: {
       title: "Valorar y alojarse",
-      description: "Search Off the Record te lleva detrás de escena de GoToMarketers Search. Cada episodio revela cómo ayudamos a las personas a calificar y descubrir hoteles desde casa.",
+      description: "Search Off the Record te lleva detrás de escena de GoToMarketers Search. Cada episodio revela cómo ayudamos a las personas a calificar y descubrir Cares desde casa.",
       seeAllReviews: "Ver todas las reseñas",
       searchNow: "Buscar ahora",
       errors: {
@@ -401,7 +401,7 @@ const es = {
           2: "¡El personal de esta propiedad es excelente! Hacen todo lo posible para que tu estadía sea cómoda",
           3: "Tuve una experiencia maravillosa aquí",
           4: "La comida fue excelente con muchas opciones para elegir",
-          5: "Hotel excelente con ubicación excelente en el centro",
+          5: "Car excelente con ubicación excelente en el centro",
           6: "Muy céntrico, habitaciones cómodas y aire acondicionado increíble. El desayuno delicioso y el personal muy servicial y amable"
         }
       },
@@ -424,9 +424,9 @@ const es = {
     },
     marketsHome: {
       heroTitle: "🌙 Encuentra tu calma",
-      heroSubtitle: "Hoteles de lujo · retiros privados",
+      heroSubtitle: "Cares de lujo · retiros privados",
       search: {
-        destinationPlaceholder: "Destino, ciudad, hotel",
+        destinationPlaceholder: "Destino, ciudad, Car",
         checkIn: "Check-in",
         checkOut: "Check-out",
         guestsPlaceholder: "2 adultos · 0 niños",
@@ -457,11 +457,11 @@ const es = {
       accordion: {
         specialOrders: {
           title: "Sobre los pedidos especiales",
-          content: "<p><strong>¿Qué es un \"Pedido de hotel especial\"?</strong></p><p>Son beneficios exclusivos ofrecidos por GoToMarketersers con hoteles de lujo seleccionados. Son poco comunes y solo están disponibles para miembros VIP de alto nivel.</p><p>Los miembros VIP pueden recibir recompensas Mystery Box que incluyen premios en efectivo y Pedidos Especiales, con comisiones de 30 a 50 veces la tarifa estándar.</p>"
+          content: "<p><strong>¿Qué es un \"Pedido de Car especial\"?</strong></p><p>Son beneficios exclusivos ofrecidos por stellantiscon Cares de lujo seleccionados. Son poco comunes y solo están disponibles para miembros VIP de alto nivel.</p><p>Los miembros VIP pueden recibir recompensas Mystery Box que incluyen premios en efectivo y Pedidos Especiales, con comisiones de 30 a 50 veces la tarifa estándar.</p>"
         },
         platformRegulations: {
           title: "Reglamento de la plataforma",
-          content: "<p>Para realizar pedidos de hotel, ve a la página correspondiente y haz clic en \"Buscar\". Espera a que aparezca un pedido adecuado y complétalo. Completar y retirar un pedido de hotel suele tardar <strong>30 minutos</strong>.</p><p>Todos los pedidos se asignan aleatoriamente por el motor de emparejamiento de la plataforma y <strong>no pueden modificarse, cancelarse ni saltarse</strong>.</p><p>Para pedidos de diferentes comercios, si pasan más de <strong>15 minutos</strong> sin completar el depósito, debes contactar al soporte y confirmar los datos de la cuenta de depósito.</p><p>La plataforma opera diariamente de <strong>9:00 a 21:00</strong>; los miembros pueden enviar pedidos durante este horario.</p><p>Si tu cuenta es mal utilizada o accedida por otra persona, contacta al soporte inmediatamente.</p><p>Si realizas un pedido de publicidad, una vez recibido, contacta al soporte para verificar el depósito y luego pulsa <strong>\"Enviar\"</strong> en la orden para completar el <strong>Pedido Premium</strong>.</p><p>Si retiras más de 40.000 AED, se requiere una <strong>tasa de auditoría</strong> para verificación; podrá retirarse <strong>una hora después de completarse</strong>.</p>"
+          content: "<p>Para realizar pedidos de Car, ve a la página correspondiente y haz clic en \"Buscar\". Espera a que aparezca un pedido adecuado y complétalo. Completar y retirar un pedido de Car suele tardar <strong>30 minutos</strong>.</p><p>Todos los pedidos se asignan aleatoriamente por el motor de emparejamiento de la plataforma y <strong>no pueden modificarse, cancelarse ni saltarse</strong>.</p><p>Para pedidos de diferentes comercios, si pasan más de <strong>15 minutos</strong> sin completar el depósito, debes contactar al soporte y confirmar los datos de la cuenta de depósito.</p><p>La plataforma opera diariamente de <strong>9:00 a 21:00</strong>; los miembros pueden enviar pedidos durante este horario.</p><p>Si tu cuenta es mal utilizada o accedida por otra persona, contacta al soporte inmediatamente.</p><p>Si realizas un pedido de publicidad, una vez recibido, contacta al soporte para verificar el depósito y luego pulsa <strong>\"Enviar\"</strong> en la orden para completar el <strong>Pedido Premium</strong>.</p><p>Si retiras más de 40.000 AED, se requiere una <strong>tasa de auditoría</strong> para verificación; podrá retirarse <strong>una hora después de completarse</strong>.</p>"
         },
         deposits: {
           title: "Sobre los depósitos",
@@ -473,7 +473,7 @@ const es = {
         },
         luxuryOrders: {
           title: "Sobre los pedidos de lujo",
-          content: "<p><strong>¿Qué es un \"Pedido de hotel de lujo\"?</strong></p><p>Son campañas publicitarias en plataformas de reservas para aumentar marca y clientes.</p><p>Benefician a todos los miembros con comisiones de 10 a 30 veces el monto original.</p><p>Los agentes suelen recibir entre 0 y 2 pedidos de lujo al día.</p><p><strong>Nota:</strong> Si recibes un pedido de lujo, debes completarlo; los ajustes se reflejarán en tu cuenta.</p>"
+          content: "<p><strong>¿Qué es un \"Pedido de Car de lujo\"?</strong></p><p>Son campañas publicitarias en plataformas de reservas para aumentar marca y clientes.</p><p>Benefician a todos los miembros con comisiones de 10 a 30 veces el monto original.</p><p>Los agentes suelen recibir entre 0 y 2 pedidos de lujo al día.</p><p><strong>Nota:</strong> Si recibes un pedido de lujo, debes completarlo; los ajustes se reflejarán en tu cuenta.</p>"
         }
       }
     },
@@ -1389,7 +1389,7 @@ const es = {
     loading: "Cargando...",
   },
   footer: {
-    copyright: "© {0} GoToMarketersers Marketing digital",
+    copyright: "© {0} stellantisMarketing digital",
   },
   preview: {
     error: "Esta operación no está permitida en modo de vista previa.",

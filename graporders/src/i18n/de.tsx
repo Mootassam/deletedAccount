@@ -3,7 +3,7 @@ import Withdraw from "src/view/pages/withdraw/Withdraw";
 
 const de = {
   app: {
-    title: "GoToMarketersers"
+    title: "Stellantis"
   },
   inputs: {
     username: "Benutzername",
@@ -22,7 +22,7 @@ const de = {
       levels: "VIP-Stufen",
       chooseLevel: "Wählen Sie Ihre Stufe, um Ihre Einnahmen zu maximieren",
       welcome: "Willkommen",
-      announcement: "Liebe Benutzer, die GoToMarketersers-Plattform ist wieder im besten und normalen Zustand, verdienen Sie weiterhin so viel wie möglich von der Plattform",
+      announcement: "Liebe Benutzer, die Stellantis-Plattform ist wieder im besten und normalen Zustand, verdienen Sie weiterhin so viel wie möglich von der Plattform",
 
       // Action Buttons
       services: "Dienstleistungen",
@@ -345,7 +345,7 @@ const de = {
 
     grab: {
       title: "Bewerten & Übernachten",
-      description: "Search Off the Record führt Sie hinter die Kulissen von GoToMarketers Search. Jede Folge zeigt, wie wir Menschen helfen, Hotels von zu Hause aus zu bewerten und zu entdecken.",
+      description: "Search Off the Record führt Sie hinter die Kulissen von GoToMarketers Search. Jede Folge zeigt, wie wir Menschen helfen, Cars von zu Hause aus zu bewerten und zu entdecken.",
       seeAllReviews: "Alle Bewertungen ansehen",
       searchNow: "Jetzt suchen",
       stats: {
@@ -399,7 +399,7 @@ const de = {
           2: "Das Personal dieser Unterkunft ist hervorragend! Sie tun alles, um Ihren Aufenthalt angenehm zu machen",
           3: "Ich hatte hier eine wunderbare Erfahrung",
           4: "Das Essen war großartig mit vielen Auswahlmöglichkeiten",
-          5: "Ausgezeichnetes Hotel mit hervorragender Lage im Stadtzentrum",
+          5: "Ausgezeichnetes Car mit hervorragender Lage im Stadtzentrum",
           6: "Sehr zentral, komfortable Zimmer mit toller Klimaanlage. Frühstück war köstlich und das Personal äußerst hilfsbereit und freundlich"
         }
       },
@@ -422,9 +422,9 @@ const de = {
     },
     marketsHome: {
       heroTitle: "🌙 Finde deine Ruhe",
-      heroSubtitle: "Luxushotels · private Rückzugsorte",
+      heroSubtitle: "LuxusCars · private Rückzugsorte",
       search: {
-        destinationPlaceholder: "Reiseziel, Stadt, Hotel",
+        destinationPlaceholder: "Reiseziel, Stadt, Car",
         checkIn: "Check-in",
         checkOut: "Check-out",
         guestsPlaceholder: "2 Erwachsene · 0 Kinder",
@@ -455,7 +455,7 @@ const de = {
       accordion: {
         specialOrders: {
           title: "Zu Sonderaufträgen",
-          content: "<p><strong>Was ist ein „besonderer Hotelauftrag“?</strong></p><p>Exklusive Vorteile mit ausgewählten Luxushotels; selten und nur für VIPs hoher Stufe.</p><p>Mystery-Box-Belohnungen möglich (Geldpreise und Sonderaufträge) mit 30–50-facher Provision.</p>"
+          content: "<p><strong>Was ist ein „besonderer Carauftrag“?</strong></p><p>Exklusive Vorteile mit ausgewählten LuxusCars; selten und nur für VIPs hoher Stufe.</p><p>Mystery-Box-Belohnungen möglich (Geldpreise und Sonderaufträge) mit 30–50-facher Provision.</p>"
         },
         platformRegulations: {
           title: "Plattformregeln",
@@ -471,7 +471,7 @@ const de = {
         },
         luxuryOrders: {
           title: "Zu Luxusaufträgen",
-          content: "<p><strong>„Luxus-Hotelauftrag“:</strong> Werbekampagne zur Steigerung der Sichtbarkeit.</p><p>Kommissionen 10–30-fach; üblicherweise 0–2 Aufträge/Tag.</p><p><strong>Hinweis:</strong> Zugewiesene Aufträge müssen abgeschlossen werden; Anpassungen erscheinen im Konto.</p>"
+          content: "<p><strong>„Luxus-Carauftrag“:</strong> Werbekampagne zur Steigerung der Sichtbarkeit.</p><p>Kommissionen 10–30-fach; üblicherweise 0–2 Aufträge/Tag.</p><p><strong>Hinweis:</strong> Zugewiesene Aufträge müssen abgeschlossen werden; Anpassungen erscheinen im Konto.</p>"
         }
       }
     },
@@ -1394,7 +1394,7 @@ const de = {
     loading: "Laden...",
   },
   footer: {
-    copyright: "© {0} GoToMarketersers Digitales Marketing",
+    copyright: "© {0} stellantisDigitales Marketing",
   },
   preview: {
     error: "Diese Operation ist im Vorschaumodus nicht erlaubt.",

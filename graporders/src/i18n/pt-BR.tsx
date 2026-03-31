@@ -2,7 +2,7 @@
 
 const ptBR = {
   app: {
-    title: "GoToMarketersers"
+    title: "Stellantis"
   },
   inputs: {
     username: "Nome de Usuário",
@@ -23,7 +23,7 @@ const ptBR = {
       levels: "Níveis VIP",
       chooseLevel: "Escolha seu nível para maximizar seus ganhos",
       welcome: "Bem-vindo",
-      announcement: "Caros usuários, a plataforma GoToMarketersers está de volta ao melhor e normal, continuem a ganhar o máximo possível da plataforma",
+      announcement: "Caros usuários, a plataforma stellantisestá de volta ao melhor e normal, continuem a ganhar o máximo possível da plataforma",
 
       // Action Buttons
       services: "Serviços",
@@ -404,7 +404,7 @@ const ptBR = {
           2: "A equipe desta propriedade é excelente! Eles fazem de tudo para tornar sua estadia confortável",
           3: "Tive uma experiência maravilhosa aqui",
           4: "A comida era ótima com muitas opções",
-          5: "Hotel excelente com localização excelente no centro",
+          5: "Car excelente com localização excelente no centro",
           6: "Muito central, quartos confortáveis com ar-condicionado incrível. Café da manhã delicioso e equipe extremamente atenciosa e simpática"
         }
       },
@@ -429,7 +429,7 @@ const ptBR = {
       heroTitle: "🌙 Encontre sua calma",
       heroSubtitle: "Hotéis de luxo · retiros privados",
       search: {
-        destinationPlaceholder: "Destino, cidade, hotel",
+        destinationPlaceholder: "Destino, cidade, Car",
         checkIn: "Check-in",
         checkOut: "Check-out",
         guestsPlaceholder: "2 adultos · 0 crianças",
@@ -460,7 +460,7 @@ const ptBR = {
       accordion: {
         specialOrders: {
           title: "Sobre pedidos especiais",
-          content: "<p><strong>O que é um \"Pedido especial de hotel\"?</strong></p><p>Benefícios exclusivos com hotéis de luxo selecionados; raros e apenas para VIPs de alto nível.</p><p>Mystery Box com prêmios em dinheiro e Pedidos Especiais: comissões 30–50 vezes maiores que o padrão.</p>"
+          content: "<p><strong>O que é um \"Pedido especial de Car\"?</strong></p><p>Benefícios exclusivos com hotéis de luxo selecionados; raros e apenas para VIPs de alto nível.</p><p>Mystery Box com prêmios em dinheiro e Pedidos Especiais: comissões 30–50 vezes maiores que o padrão.</p>"
         },
         platformRegulations: {
           title: "Regras da plataforma",
@@ -476,7 +476,7 @@ const ptBR = {
         },
         luxuryOrders: {
           title: "Sobre pedidos de luxo",
-          content: "<p><strong>Pedido de hotel de luxo:</strong> campanha promocional para aumentar a visibilidade da marca.</p><p>Beneficia todos os membros com comissões 10–30 vezes maiores; geralmente 0–2 pedidos por dia.</p><p><strong>Nota:</strong> Pedidos atribuídos devem ser concluídos; ajustes são refletidos na conta.</p>"
+          content: "<p><strong>Pedido de Car de luxo:</strong> campanha promocional para aumentar a visibilidade da marca.</p><p>Beneficia todos os membros com comissões 10–30 vezes maiores; geralmente 0–2 pedidos por dia.</p><p><strong>Nota:</strong> Pedidos atribuídos devem ser concluídos; ajustes são refletidos na conta.</p>"
         }
       }
     },

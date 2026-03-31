@@ -23,20 +23,23 @@ img {
   width: 100%;
   /* border-radius: 8px; */
 }
-.start__{ 
+
+.start__ {
   font-size: 54px !important;
 }
 
 
 body {
 
-  background-color: #EDF1F7;
+  background-color: #0a0a0a;
+
 }
 
 p {
   /* color: rgb(161, 167, 187); */
 }
-.invalid-feedback { 
+
+.invalid-feedback {
 
   color: red;
   font-size: 12px;
@@ -48,12 +51,31 @@ p {
 
 
 
-.remove__blue{ 
+.remove__blue {
   text-decoration: none;
 }
 
 
 
-img { 
+img {
   width: 100%;
+}
+
+
+/* Smooth Scroll */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d4af37;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #e0b84d;
 }

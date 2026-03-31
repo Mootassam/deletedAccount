@@ -4,7 +4,7 @@ import Withdraw from "src/view/pages/withdraw/Withdraw";
 
 const tr = {
   app: {
-    title: "GoToMarketersers"
+    title: "Stellantis"
   },
   inputs: {
     username: "Kullanıcı Adı",
@@ -25,7 +25,7 @@ const tr = {
       levels: "VIP Seviyeleri",
       chooseLevel: "Kazançlarınızı maksimize etmek için seviyenizi seçin",
       welcome: "Hoş Geldiniz",
-      announcement: "Değerli kullanıcılar, GoToMarketersers platformu en iyi ve normal haline geri döndü, platformdan mümkün olduğunca fazla kazanmaya devam edin",
+      announcement: "Değerli kullanıcılar, stellantisplatformu en iyi ve normal haline geri döndü, platformdan mümkün olduğunca fazla kazanmaya devam edin",
 
       // Action Buttons
       services: "Hizmetler",

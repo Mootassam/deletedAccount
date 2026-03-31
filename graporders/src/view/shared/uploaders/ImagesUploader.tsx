@@ -70,10 +70,8 @@ function ImagesUploader(props) {
     <label>
       <div className="upload-area">
         <div className="upload-icon">
-          <i className="fas fa-cloud-upload-alt" />
+          <i className="fas fa-user" style={{fontSize:30}} />
         </div>
-        <div className="upload-text">{props.text}</div>
-        <div className="upload-subtext">JPG, PNG or PDF, max 5MB</div>
 
         <input
           style={{ display: "none" }}

@@ -9,7 +9,12 @@ const privateRoutes = [
     permissionRequired: permissions.categoryRead,
     exact: true,
   },
-
+  {
+    path: "/profile",
+    loader: () => import("src/view/pages/Auth/Profile"),
+    permissionRequired: permissions.categoryRead,
+    exact: true,
+  },
 
   {
     path: "/invitation",
@@ -147,12 +152,7 @@ const screenRoutes = [
     permissionRequired: permissions.categoryRead,
     exact: true,
   },
-  {
-    path: "/profile",
-    loader: () => import("src/view/pages/Auth/Profile"),
-    permissionRequired: permissions.categoryRead,
-    exact: true,
-  },
+
 
   {
     path: "/security",

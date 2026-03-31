@@ -720,7 +720,7 @@ const Grappage = () => {
           }
           
           .hero-title {
-            font-size: 48px;
+            font-size: 40px;
           }
           
           .main-container {

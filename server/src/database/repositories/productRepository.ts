@@ -14,14 +14,7 @@ import Records from "../models/records";
 import Dates from "../utils/Dates";
 class ProductRepository {
 
-  private static baseConfig = {
-    "cookie": "_ga=GA1.1.1807754517.1763083251; ka_sessionid=5acf70c39073cdf7b663f7b375a2a692; CSRF-TOKEN=CfDJ8E2Nv-_xTuFMnx6IZ-XCV9ys_4oYgrTrS_L8vR36OB-kDQavyZvv3cJ7EiH2YvNgjfNGbRRa5E2xugFUcXRSDm3s_OURxgmz244AaODX2g; GCLB=CKbs1rGz6rLfngEQAw; build-hash=7b9eb83fb96933a086319a2af9654f2f0c6bc945; XSRF-TOKEN=CfDJ8E2Nv-_xTuFMnx6IZ-XCV9z93sTd2V_Hsm3muzlM2i71YvHlaQH6swWCYi2VY2ZuZGiSixZkSPTYZySpZiQGvP8T-OooMdK5utUcBdT68NR_kg; CLIENT-TOKEN=eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJpc3MiOiJrYWdnbGUiLCJhdWQiOiJjbGllbnQiLCJzdWIiOiIiLCJuYnQiOiIyMDI2LTAyLTE4VDE5OjA1OjU0LjQyNDY2MTJaIiwiaWF0IjoiMjAyNi0wMi0xOFQxOTowNTo1NC40MjQ2NjEyWiIsImp0aSI6IjI1YTJiMGNlLWMyNDEtNDRlMS04OGUzLTU3OWI2NTQyODZhMyIsImV4cCI6IjIwMjYtMDMtMThUMTk6MDU6NTQuNDI0NjYxMloiLCJhbm9uIjp0cnVlLCJmZmgiOiJmZjE1NmNlNjhjMDA3NDU1ZDIyZTlmNjBhYTEzMjhlZDU4NjA3MTQ3MjliZDc4MGNjYjZmZTdmNWI4ZmZmMWM1IiwicGlkIjoia2FnZ2xlLTE2MTYwNyIsInN2YyI6IndlYi1mZSIsInNkYWsiOiJBSXphU3lBNGVOcVVkUlJza0pzQ1pXVnotcUw2NTVYYTVKRU1yZUUiLCJibGQiOiI3YjllYjgzZmI5NjkzM2EwODYzMTlhMmFmOTY1NGYyZjBjNmJjOTQ1In0.; _ga_T7QHS60L4Q=GS2.1.s1771441515$o3$g1$t1771441554$j21$l0$h0",
-    "origin": "https://www.kaggle.com",
-    "referer": "https://www.kaggle.com/datasets/robintomar11/hoelsdatasets",
-    "x-kaggle-build-version": "7b9eb83fb96933a086319a2af9654f2f0c6bc945",
-    "Content-Type": "application/json",
-    "x-xsrf-token": "CfDJ8E2Nv-_xTuFMnx6IZ-XCV9z93sTd2V_Hsm3muzlM2i71YvHlaQH6swWCYi2VY2ZuZGiSixZkSPTYZySpZiQGvP8T-OooMdK5utUcBdT68NR_kg"
-  };
+
   static async create(data, options: IRepositoryOptions) {
     const currentTenant = MongooseRepository.getCurrentTenant(options);
     const currentUser = MongooseRepository.getCurrentUser(options);
@@ -49,40 +42,36 @@ class ProductRepository {
   }
 
 
-  private static async fetchKaggleData(dataConfig: any, value: any, titleIndex: number, imageIndex: number) {
-    const url = "https://www.kaggle.com/api/i/datasets.DatasetService/GetDataViewExternal";
+  private static async fetchData(value: any, id) {
+    const url = `https://www.classicdriver.com/en/api/search/cars?&offset=0&currency=USD&make=${id}&type=car&price_from=all&price_to=all&year_from=all&year_to=all&sort=newest`;
 
     try {
-      const response = await axios.post(url, dataConfig, { headers: this.baseConfig });
+      const response = await axios.get(url);
+      console.log("🚀 ~ ProductRepository ~ fetchData ~ response:", response.data.items)
 
       // The actual data is nested under dataView.dataRaw
-      const dataRaw = response?.data?.dataView?.dataRaw;
-      if (!dataRaw || !dataRaw.data) {
+      const dataRaw = response?.data?.items;
+      if (!dataRaw) {
         console.warn("No dataRaw found in response");
         return [];
       }
 
       // Parse the JSON string
-      let parsed;
-      try {
-        parsed = JSON.parse(dataRaw.data);
-      } catch (e) {
-        console.error("Failed to parse dataRaw.data as JSON", e);
-        return [];
-      }
+  
 
       // Extract the array of hotels – adjust the key if needed
-      const hotels = parsed.airbnbHotels;
-      if (!Array.isArray(hotels)) {
+      const cars = dataRaw || [];
+      if (!Array.isArray(cars)) {
         console.warn("parsed data does not contain airbnbHotels array");
         return [];
       }
+      console.log("🚀 ~ ProductRepository ~ fetchData ~ cars:", cars)
 
       // Map each hotel to your desired output format
-      const values = hotels.map((item) => ({
+      const values = cars.map((item) => ({
         // Use the first subtitle as the title, fallback to 'No Title'
-        title: item.subtitles?.[0] || 'No Title',
-        image: item.thumbnail || 'No Image',
+        title: item.title || 'No Title',
+        image: item.img || 'No Image',
         commission: value.comisionrate,
         vip: value.vipId,
         amount: this.generateRandomPrice(value.min, value.max)
@@ -109,83 +98,29 @@ class ProductRepository {
   }
   // VIP 1 - Amazon Canada Products
   static async Vip1(value: any) {
-    const data = {
-      verificationInfo: {
-        datasetId: 3287722,
-        databundleVersionId: 5794156
-      },
-      firestorePath: "S49c4MVLTCbrmPJeSNUM/versions/F2HhMSTESrSSEqre4NQu/files/Berlin.json"
-    };
 
-    return await ProductRepository.fetchKaggleData(data, value, 1, 2);
+    return await ProductRepository.fetchData(value, '169');
   }
 
   // VIP 2 - Home and Kitchen
   static async Vip2(value: any) {
-    const data = {
-      verificationInfo: {
-        datasetId: 3287722,
-        databundleVersionId: 5794156
-      },
-      firestorePath: "S49c4MVLTCbrmPJeSNUM/versions/F2HhMSTESrSSEqre4NQu/files/London.json",
-
-    };
-    return await ProductRepository.fetchKaggleData(data, value, 1, 2);
-
-
-
+    return await ProductRepository.fetchData(value, '145');
   }
 
   // VIP 3 - Car Parts
 
-  // {datasetId: 3287722, databundleVersionId: 5794156}
   static async Vip3(value: any) {
-    const data = {
-      verificationInfo: {
-        datasetId: 3287722,
-        databundleVersionId: 5794156
-      },
-      firestorePath: "S49c4MVLTCbrmPJeSNUM/versions/F2HhMSTESrSSEqre4NQu/files/Madrid.json",
-
-    };
-
-    return await ProductRepository.fetchKaggleData(data, value, 1, 2);
-
-
+    return await ProductRepository.fetchData(value, '116');
   }
 
   // VIP 4 - Air Conditioners
   static async Vip4(value: any) {
-    const data = {
-      verificationInfo: {
-        datasetId: 3287722,
-        databundleVersionId: 5794156
-
-      },
-      firestorePath: "S49c4MVLTCbrmPJeSNUM/versions/F2HhMSTESrSSEqre4NQu/files/Paris.json",
-
-    };
-
-    return await ProductRepository.fetchKaggleData(data, value, 1, 2);
-
-
+    return await ProductRepository.fetchData(value, '110');
   }
 
   // VIP 5 - Grocery and Gourmet Foods
   static async Vip5(value: any) {
-    const data = {
-      verificationInfo: {
-        datasetId: 3287722,
-        databundleVersionId: 5794156
-      },
-      firestorePath: "S49c4MVLTCbrmPJeSNUM/versions/F2HhMSTESrSSEqre4NQu/files/Rome.json",
-
-
-    };
-
-    return await ProductRepository.fetchKaggleData(data, value, 1, 2);
-
-
+    return await ProductRepository.fetchData(value, '125');
   }
 
 

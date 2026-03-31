@@ -56,11 +56,11 @@ function Signin() {
   return (
     <div className="auth__page">
       {/* Language switcher */}
-      <div className="language-switcher">
+      {/* <div className="language-switcher">
         <button onClick={handleLanguageToggle} className="lang-btn" aria-label="Switch language">
           <i className="fa-solid fa-language" />
         </button>
-      </div>
+      </div> */}
 
       <div className="auth__card">
         <div className="auth__header">

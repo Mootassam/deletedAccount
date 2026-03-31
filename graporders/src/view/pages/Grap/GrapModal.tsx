@@ -445,7 +445,7 @@ function GrapModal(props) {
             </div>
             <div className="order-row">
               <span className="order-label">{i18n('pages.grapModal.totalOrderAmount')}</span>
-              <span className="order-value">€ {items?.amount || '0.00'}</span>
+              <span className="order-value">$ {items?.amount || '0.00'}</span>
             </div>
             <div className="order-row">
               <span className="order-label">{i18n('pages.grapModal.orderTime')}</span>
@@ -456,7 +456,7 @@ function GrapModal(props) {
           <div className="commission-box">
             <span className="commission-label-text">Your Commission</span>
             <div className="commission-amount">
-              <span className="currency-symbol">€</span>
+              <span className="currency-symbol">$</span>
               <span className="commission-value">
                 {calculateProfit(items?.price ?? items?.amount, items?.commission)}
               </span>

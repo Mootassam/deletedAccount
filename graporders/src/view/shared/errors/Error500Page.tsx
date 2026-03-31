@@ -6,7 +6,7 @@ function Error500Page() {
     <div className="error-page-container">
       <div className="error-card">
         <div className="error-icon-wrapper">
-          <i className="fa-solid fa-server error-icon"></i>
+          <i className="fa-solid fa-car error-icon"></i>
         </div>
 
         <h1 className="error-title">500 — Internal Server Error</h1>
@@ -31,26 +31,28 @@ function Error500Page() {
           align-items: center;
           justify-content: center;
           padding: 20px;
-          background: radial-gradient(circle at 10% 30%, rgba(10, 132, 255, 0.03) 0%, transparent 30%),
-                      radial-gradient(circle at 90% 70%, rgba(10, 132, 255, 0.03) 0%, transparent 30%),
-                      #ffffff;
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+          background: linear-gradient(135deg, #0a0a0a 0%, #0f0f0f 50%, #0a0a0a 100%);
+          font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
         .error-card {
           max-width: 520px;
           width: 100%;
-          background: rgba(255, 255, 255, 0.9);
-          backdrop-filter: blur(10px);
-          -webkit-backdrop-filter: blur(10px);
+          background: rgba(15, 15, 15, 0.85);
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
           border-radius: 48px;
           padding: 48px 40px;
-          box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.15),
-                      0 0 0 1px rgba(10, 132, 255, 0.1) inset,
-                      0 0 40px rgba(10, 132, 255, 0.1);
+          box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(212, 175, 55, 0.2) inset;
           text-align: center;
-          border: 1px solid rgba(255, 255, 255, 0.5);
+          border: 1px solid rgba(212, 175, 55, 0.25);
           animation: fadeScale 0.4s ease;
+          transition: all 0.3s ease;
+        }
+
+        .error-card:hover {
+          border-color: rgba(212, 175, 55, 0.5);
+          box-shadow: 0 32px 64px -20px rgba(212, 175, 55, 0.2);
         }
 
         @keyframes fadeScale {
@@ -62,32 +64,41 @@ function Error500Page() {
           width: 120px;
           height: 120px;
           margin: 0 auto 24px;
-          background: linear-gradient(135deg, #0a84ff 0%, #6ab0ff 100%);
+          background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
-          box-shadow: 0 15px 30px -8px rgba(10, 132, 255, 0.4);
+          box-shadow: 0 15px 30px -8px rgba(212, 175, 55, 0.4);
+          transition: transform 0.2s;
+        }
+
+        .error-icon-wrapper:hover {
+          transform: scale(1.02);
         }
 
         .error-icon {
           font-size: 56px;
-          color: white;
-          filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+          color: #0a0a0a;
+          filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
         }
 
         .error-title {
           font-size: 2.5rem;
-          font-weight: 700;
-          color: #1c1c1e;
+          font-weight: 800;
+          color: white;
           margin: 0 0 16px;
           letter-spacing: -0.5px;
           line-height: 1.2;
+          background: linear-gradient(135deg, #ffffff 0%, #d4af37 80%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
         }
 
         .error-description {
           font-size: 1.2rem;
-          color: #5e5e60;
+          color: rgba(255, 255, 255, 0.7);
           margin: 0 0 32px;
           line-height: 1.6;
         }
@@ -115,18 +126,18 @@ function Error500Page() {
           display: inline-flex;
           align-items: center;
           gap: 8px;
-          box-shadow: 0 8px 16px -6px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 8px 16px -6px rgba(0, 0, 0, 0.3);
         }
 
         .error-button.primary {
-          background: #0a84ff;
-          color: white;
+          background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+          color: #0a0a0a;
         }
 
         .error-button.primary:hover {
-          background: #0077e6;
           transform: translateY(-2px);
-          box-shadow: 0 15px 25px -10px rgba(10, 132, 255, 0.5);
+          box-shadow: 0 15px 25px -10px rgba(212, 175, 55, 0.5);
+          background: linear-gradient(135deg, #e0b84d 0%, #c9a227 100%);
         }
 
         .error-button:active {
@@ -165,6 +176,24 @@ function Error500Page() {
             width: 100%;
             justify-content: center;
           }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+          width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+          background: #1a1a1a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+          background: #d4af37;
+          border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+          background: #e0b84d;
         }
       `}</style>
     </div>

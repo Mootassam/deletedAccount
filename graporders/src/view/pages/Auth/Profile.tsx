@@ -34,6 +34,9 @@ function Profile() {
 
   const referenceCodeRef = useRef(null);
 
+  // Determine verification status – adjust this logic to match your backend data
+  const isVerified = currentUser?.isVerified || currentUser?.kycStatus === "approved" || false;
+
   useEffect(() => {
     const values = { status: "completed" };
     dispatch(actions.doCountDay());
@@ -88,6 +91,7 @@ function Profile() {
 
   const userScore = currentUser?.score || 0;
 
+  // Dynamic menu items with verification status
   const menuItems = {
     main: [
       {
@@ -112,6 +116,22 @@ function Profile() {
       },
     ],
     other: [
+      // Verification item – dynamically styled based on status
+      {
+        icon: isVerified ? "fas fa-check-circle" : "fas fa-shield-alt",
+        name: isVerified 
+          ? i18n('pages.profile.verifiedStatus.verified') || "Verified"
+          : i18n('pages.profile.verifiedStatus.notVerified') || "KYC Verification",
+        action: () => {
+          if (!isVerified) {
+            // Go to verification page (adjust path as needed)
+            goto("/verify");
+          }
+          // If already verified, maybe do nothing or show a modal
+        },
+        // Additional flag to apply special styles
+        verified: isVerified,
+      },
       {
         icon: "fas fa-globe",
         name: i18n('pages.profile.officialWebsite'),
@@ -207,29 +227,9 @@ function Profile() {
         </div>
       </div>
 
-      <div className="verification-card">
-        <div className="verification-icon">
-          <i className="fas fa-shield-alt"></i>
-        </div>
-        <div className="verification-content">
-          <div className="verification-title">
-            {i18n('pages.profile.verifiedStatus.notVerified')}
-          </div>
-          <div className="verification-text">
-            Verify your identity to unlock full access
-          </div>
-        </div>
-        <Link to="/" style={{ textDecoration: 'none' }} className="verification-button">
-          {i18n('pages.profile.verifyButton')}
-        </Link>
-      </div>
-
       <div className="menu-sections">
         <div className="menu-section">
-          <div className="section-title">
-            <i className="fas fa-gem" style={{ marginRight: '8px', fontSize: '16px' }}></i>
-            {i18n('pages.profile.mainFunction')}
-          </div>
+       
           <div className="main-function-items">
             {menuItems.main.map((item, index) => (
               <div
@@ -248,14 +248,13 @@ function Profile() {
 
         <div className="menu-section">
           <div className="section-title">
-            <i className="fas fa-list-ul" style={{ marginRight: '8px', fontSize: '16px' }}></i>
             {i18n('pages.profile.otherFunction')}
           </div>
           <div className="section-items">
             {menuItems.other.map((item, index) => (
               <div
                 key={index}
-                className="menu-item"
+                className={`menu-item ${item.verified ? 'verified' : ''}`}
                 onClick={item.action}
               >
                 <div className="item-left">
@@ -356,7 +355,7 @@ function Profile() {
           box-sizing: border-box;
         }
 
-           body {
+        body {
           background-color: #0a0a0a;
         }
 
@@ -480,115 +479,42 @@ function Profile() {
           transform: scale(1.1);
         }
 
-        /* Verification Card */
-        .verification-card {
-          display: flex;
-          align-items: center;
-          gap: 16px;
-          background: rgba(15, 15, 15, 0.8);
-          backdrop-filter: blur(12px);
-          border: 1px solid rgba(212, 175, 55, 0.3);
-          border-radius: 24px;
-          padding: 18px 20px;
-          margin: 20px 20px 28px 20px;
-          box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-          transition: all 0.3s ease;
-        }
-
-        .verification-card:hover {
-          border-color: #d4af37;
-          transform: translateY(-2px);
-          box-shadow: 0 12px 28px rgba(212, 175, 55, 0.15);
-        }
-
-        .verification-icon {
-          width: 52px;
-          height: 52px;
-          border-radius: 50%;
-          background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.05));
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: #d4af37;
-          font-size: 24px;
-          flex-shrink: 0;
-          transition: all 0.3s;
-        }
-
-        .verification-card:hover .verification-icon {
-          transform: scale(1.1);
-        }
-
-        .verification-content {
-          flex: 1;
-        }
-
-        .verification-title {
-          font-size: 16px;
-          font-weight: 700;
-          color: #ffffff;
-          margin-bottom: 6px;
-          letter-spacing: -0.2px;
-        }
-
-        .verification-text {
-          font-size: 12px;
-          color: rgba(255,255,255,0.6);
-          line-height: 1.4;
-        }
-
-        .verification-button {
-          background: linear-gradient(145deg, #d4af37, #b8960f);
-          border: none;
-          border-radius: 30px;
-          padding: 10px 20px;
-          color: #0a0a0a;
-          font-size: 13px;
-          font-weight: 700;
-          cursor: pointer;
-          transition: all 0.2s;
-          white-space: nowrap;
-          border: 1px solid rgba(255,255,255,0.2);
-          box-shadow: 0 4px 12px rgba(212,175,55,0.3);
-          letter-spacing: 0.3px;
-        }
-
-        .verification-button:hover {
-          transform: translateY(-2px);
-          background: linear-gradient(145deg, #e0b84d, #c9a227);
-          box-shadow: 0 8px 20px rgba(212,175,55,0.5);
-        }
-
-        .verification-button:active {
-          transform: translateY(0);
-        }
-
         /* Menu Sections */
         .menu-sections {
           display: flex;
           flex-direction: column;
           gap: 28px;
-          padding: 0 20px 32px 20px;
+          padding: 10px 20px 32px 20px;
         }
 
         .section-title {
-          font-size: 18px;
+          font-size: 20px;
           font-weight: 700;
           letter-spacing: 0.5px;
           color: #d4af37;
-          padding: 0 0 14px 0;
-          margin-bottom: 18px;
-          border-bottom: 2px solid rgba(212,175,55,0.2);
-          display: flex;
-          align-items: center;
+          padding: 0 0 12px 0;
+          margin-bottom: 20px;
+          border-bottom: 2px solid rgba(212,175,55,0.4);
+          display: inline-block;
+          width: auto;
           font-family: 'Playfair Display', serif;
+          position: relative;
+        }
+
+        .section-title::after {
+          content: '';
+          position: absolute;
+          bottom: -2px;
+          left: 0;
+          width: 50px;
+          height: 2px;
+          background: linear-gradient(90deg, #d4af37, transparent);
         }
 
         /* Main Function - Horizontal Tiles */
         .main-function-items {
           display: flex;
           flex-wrap: wrap;
-          gap: 16px;
           justify-content: space-between;
         }
 
@@ -647,6 +573,7 @@ function Profile() {
           border-radius: 24px;
           border: 1px solid rgba(212,175,55,0.2);
           overflow: hidden;
+              margin-bottom: 60px;
         }
 
         .menu-item {
@@ -681,6 +608,15 @@ function Profile() {
           font-size: 18px;
           text-align: center;
           transition: transform 0.2s;
+        }
+
+        /* Verified menu item styling */
+        .menu-item.verified .item-left i {
+          color: #4caf50;
+        }
+
+        .menu-item.verified .item-left span {
+          color: #4caf50;
         }
 
         .menu-item:hover .item-left i {
@@ -868,17 +804,6 @@ function Profile() {
             padding: 4px 10px 4px 8px;
           }
           
-          .verification-card {
-            margin: 16px 16px 24px 16px;
-            padding: 14px 16px;
-          }
-          
-          .verification-icon {
-            width: 44px;
-            height: 44px;
-            font-size: 20px;
-          }
-          
           .main-icon-circle {
             width: 48px;
             height: 48px;
@@ -890,7 +815,7 @@ function Profile() {
           }
           
           .menu-sections {
-            padding: 0 16px 28px 16px;
+            padding: 10px 16px 28px 16px;
           }
           
           .menu-item {

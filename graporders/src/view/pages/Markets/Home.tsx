@@ -391,6 +391,25 @@ function Home() {
         .remove__blue {
           text-decoration: none;
         }
+
+
+             /* Smooth Scroll */
+        ::-webkit-scrollbar {
+          width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+          background: #1a1a1a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+          background: #d4af37;
+          border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+          background: #e0b84d;
+        }
       `}</style>
 
       <div className="app-home">

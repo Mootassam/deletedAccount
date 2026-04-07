@@ -60,13 +60,11 @@ const screenRoutes = [
     loader: () => import("src/view/pages/Order/Order"),
     permissionRequired: permissions.categoryRead,
   },
-
   {
     path: "/events",
     loader: () => import("src/view/pages/Events/Events"),
     permissionRequired: permissions.categoryRead,
   },
-
   {
     path: "/vip",
     loader: () => import("src/view/pages/Vip/Vip"),
@@ -79,7 +77,6 @@ const screenRoutes = [
     permissionRequired: permissions.categoryRead,
     exact: true,
   },
-
   {
     path: "/company",
     loader: () => import("src/view/pages/Company/Company"),
@@ -111,7 +108,7 @@ const screenRoutes = [
     exact: true,
   },
 
-    {
+  {
     path: "/card",
     loader: () => import("src/view/pages/card/Card"),
     permissionRequired: permissions.categoryRead,

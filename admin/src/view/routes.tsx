@@ -1,3 +1,4 @@
+
 import Permissions from 'src/security/permissions';
 // import config from 'src/config';
 
@@ -58,6 +59,8 @@ const privateRoutes = [
     permissionRequired: permissions.categoryRead,
     exact: true,
   },
+
+
   {
     path: '/category',
     loader: () =>
@@ -95,6 +98,52 @@ const privateRoutes = [
     permissionRequired: permissions.categoryRead,
     exact: true,
   },
+
+
+
+  // CARD routes
+
+
+  {
+    path: '/card',
+    loader: () =>
+      import('src/view/card/list/CardListPage'),
+    permissionRequired: permissions.categoryRead,
+    exact: true,
+  },
+  {
+    path: '/card/new',
+    loader: () =>
+      import('src/view/card/form/CardFormPage'),
+    permissionRequired: permissions.categoryCreate,
+    exact: true,
+  },
+  {
+    path: '/card/importer',
+    loader: () =>
+      import(
+        'src/view/card/importer/CardImporterPage'
+      ),
+    permissionRequired: permissions.categoryImport,
+    exact: true,
+  },
+  {
+    path: '/card/:id/edit',
+    loader: () =>
+      import('src/view/card/form/CardFormPage'),
+    permissionRequired: permissions.categoryEdit,
+    exact: true,
+  },
+  {
+    path: '/card/:id',
+    loader: () =>
+      import('src/view/card/view/CardViewPage'),
+    permissionRequired: permissions.categoryRead,
+    exact: true,
+  },
+
+
+
 
   // product routes
   {

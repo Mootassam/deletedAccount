@@ -11,7 +11,6 @@ import Error405 from "../../errors/Error405";
 
 class TransactionRepository {
   static async create(data, options: IRepositoryOptions) {
-    console.log("🚀 ~ TransactionRepository ~ create ~ data:", data)
     const currentTenant = MongooseRepository.getCurrentTenant(options);
     const currentUser = MongooseRepository.getCurrentUser(options);
     const [record] = await Transaction(options.database).create(

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,9 +29,11 @@ const schema = yup.object().shape({
   phoneNumber: yupFormSchemas.string(i18n("user.fields.phoneNumber"), {
     required: true,
   }),
-  withdrawPassword: yupFormSchemas.string(
-    i18n("user.fields.withdrawPassword"),
-    { required: true }
+  username: yupFormSchemas.string(
+    i18n("user.fields.email"),
+    { required: true ,
+      email: true,
+    }
   ),
   invitationcode: yupFormSchemas.string(i18n("user.fields.invitationcode"), {
     required: true,
@@ -259,9 +262,9 @@ function Signup() {
               {/* Withdraw Password */}
               <div className="form__group">
                 <InputFormItem
-                  type="password"
-                  name="withdrawPassword"
-                  placeholder={i18n("user.fields.withdrawPassword")}
+                  type="text"
+                  name="username"
+                  placeholder={i18n("user.fields.email")}
                   className="auth__input"
                 />
               </div>

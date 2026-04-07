@@ -39,6 +39,7 @@ function VipPage() {
   const history = useHistory();
 
   const vipRecords = useSelector(selector.selectRows);
+  console.log("🚀 ~ VipPage ~ vipRecords:", vipRecords)
   const loading = useSelector(selector.selectLoading);
   const currentUser = useSelector(authSelectors.selectCurrentUser);
 
@@ -89,7 +90,11 @@ function VipPage() {
 
   const VipLevelCard = memo(({ vip }: { vip: VipItem }) => {
     const isCurrent = currentUser?.vip?.id === vip.id;
-    const tasksPerDay = vip.tasksperday || vip.dailyorder || "0";
+    const tasksPerDay = vip.dailyorder
+
+      || vip.dailyorder
+
+      || "0";
 
     return (
       <div
@@ -123,26 +128,46 @@ function VipPage() {
           <div className="vip-level-info">
             <h4 className="level-title">{vip?.title || i18n('pages.vip.level')}</h4>
 
+
+            <span>
+              {vip.levellimit && (
+
+                <p style={{ fontSize:15}} >
+                  USD {vip.levellimit}
+                </p>
+              )}
+            </span>
+            <br />
+
+
             {vip.description && (
               <p className="level-description">{vip.description}</p>
             )}
 
             <div className="level-features">
-              <div className="feature-item">
-                <i className="fa-solid fa-percentage feature-icon"></i>
-                <span>{vip.comisionrate || "0"}% {i18n("pages.vip.commissionRate")}</span>
-              </div>
+
 
               <div className="feature-item">
                 <i className="fa-solid fa-box feature-icon"></i>
-                <span>{i18n("pages.vip.setperday")}: {tasksPerDay}</span>
+                <span> {tasksPerDay} {i18n("pages.vip.setperday")}</span>
               </div>
 
               <div className="feature-item">
                 <i className="fa-solid fa-calendar-alt feature-icon"></i>
-                <span>{i18n("pages.vip.pointPeriod", 365)}</span>
+                <span>{vip.setperday || "0"} {i18n("pages.vip.setperday")}</span>
               </div>
+              <div className="feature-item">
+                <i className="fa-solid fa-percentage feature-icon"></i>
+                <span>{vip.comisionrate || "0"}% {i18n("pages.vip.commissionRate")}</span>
+              </div>
+              <div className="feature-item">
+                <i className="fa-solid fa-percentage feature-icon"></i>
+                <span>{vip.commissionmergedata || "0"}% {i18n("pages.vip.premiumCommission")}</span>
+              </div>
+
             </div>
+
+
 
             {vip.price && (
               <div className="level-price">

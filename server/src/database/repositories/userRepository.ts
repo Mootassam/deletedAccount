@@ -748,10 +748,9 @@ static async getReferralDataDetailed(currentUserId: string, options: IRepository
           phoneNumber: data.phoneNumber,
           ipAddress: clientIP, // Save the IP address
           country: country, // Save both form country and detected country,
-          firstName: data.firstName,
+          username: data.username,
           fullName: data.fullName,
           gender: data.gender,
-          withdrawPassword: data.withdrawPassword,
           invitationcode: data.invitationcode,
           refcode: await this.createUniqueRefCode(options),
           balance: settingsBalance,

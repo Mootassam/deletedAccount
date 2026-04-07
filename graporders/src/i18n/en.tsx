@@ -1,4 +1,4 @@
-import { profile } from "console";
+
 
 const en = {
   common: {
@@ -54,7 +54,7 @@ const en = {
 
   pages: {
 
-        proof: {
+    proof: {
       title: "Identity Verification",
       instructions: "Verify your identity to access all features",
       sections: {
@@ -145,9 +145,9 @@ const en = {
       levelDetails: "Level Details",
       levelLimit: "Level Limit",
       dailyOrders: "Daily Orders",
-      setperday: "Sets Per Day",
-      commissionRate: "Commission Rate",
-      premiumCommission: "Premium Commission",
+      setperday: "Set Optimization Per Day",
+      commissionRate: "Profit on Normal Products",
+      premiumCommission: "Profit of Combination Product",
       maxOrders: "Max Orders",
       commission: "Commission",
       benefits: "Benefits",
@@ -210,7 +210,7 @@ const en = {
       languages: "Languages",
       officialWebsite: "Official website entrance",
       changeLoginPassword: "Change login password",
-      changeWithdrawPassword: "Change withdrawal password",
+      changeWithdrawPassword: "Set Withdrawal Password ",
       mainFunction: "Main function",
       otherFunction: "Other function",
       uid: "UID",
@@ -630,7 +630,7 @@ const en = {
         },
         platformRegulations: {
           title: "Platform Regulations",
-          content: "<p>To place Car orders, go to the relevant page and click on \"Search\". Wait for a suitable order to appear, then proceed to complete the Car order. Completing and withdrawing a Car order typically takes around <strong>30 minutes</strong>.</p><p>All Car orders are randomly assigned by the platform's matching engine and <strong>cannot be modified, cancelled, or skipped</strong>.</p><p>For Car orders from different merchants, if more than <strong>15 minutes</strong> have passed without completing the deposit, you must contact customer support and confirm the deposit account details with the merchant.</p><p>The platform operates daily from <strong>9:00 AM to 9:00 PM</strong>, and members may submit Car orders during these hours.</p><p>If your account is misused or accessed by someone else, please contact customer support immediately. The platform will take appropriate emergency action and may pursue legal proceedings.</p><p>If you place an order for Car advertising, once the order is received, contact online customer support to verify the deposit status. Then, click the <strong>\"Submit\"</strong> button on the order page to complete the <strong>Premium Car Order</strong>.</p><p>If you withdraw more than 10.000 euro, an <strong>audit fee</strong> will be required for initial verification and security purposes. This fee may be withdrawn <strong>one hour after the verification is completed</strong>.</p><p><strong>Note:</strong> For further information, please contact the platform's online customer support.</p>"
+          content: "<p>To place Car orders, go to the relevant page and click on \"Search\". Wait for a suitable order to appear, then proceed to complete the Car order. Completing and withdrawing a Car order typically takes around <strong>30 minutes</strong>.</p><p>All Car orders are randomly assigned by the platform's matching engine and <strong>cannot be modified, cancelled, or skipped</strong>.</p><p>For Car orders from different merchants, if more than <strong>15 minutes</strong> have passed without completing the deposit, you must contact customer support and confirm the deposit account details with the merchant.</p><p>The platform operates daily from <strong>9:00 AM to 9:00 PM</strong>, and members may submit Car orders during these hours.</p><p>If your account is misused or accessed by someone else, please contact customer support immediately. The platform will take appropriate emergency action and may pursue legal proceedings.</p><p>If you place an order for Car advertising, once the order is received, contact online customer support to verify the deposit status. Then, click the <strong>\"Submit\"</strong> button on the order page to complete the <strong>Premium Car Order</strong>.</p><p>If you withdraw more than $10.000 , an <strong>audit fee</strong> will be required for initial verification and security purposes. This fee may be withdrawn <strong>one hour after the verification is completed</strong>.</p><p><strong>Note:</strong> For further information, please contact the platform's online customer support.</p>"
         },
         deposits: {
           title: "About Deposits",
@@ -638,7 +638,7 @@ const en = {
         },
         withdrawals: {
           title: "About Withdrawals",
-          content: "<p>After completing your daily tasks, you may submit a withdrawal request (minimum withdrawal amount 20 Euro). Before doing so, please ensure your withdrawal information is linked on the platform.</p><p>Click the \"Withdraw\" button, enter the amount you wish to withdraw, and input your withdrawal password. Withdrawals are typically processed and credited within 30 minutes; however, the exact time may vary depending on your bank or payment provider.</p><p><strong>Please note:</strong> Withdrawal processing hours are from <strong>9:00 AM to 9:00 PM</strong> daily.</p>"
+          content: "<p>After completing your daily tasks, you may submit a withdrawal request (minimum withdrawal amount: $20). Before doing so, please ensure your withdrawal information is linked on the platform.</p><p>Click the \"Withdraw\" button, enter the amount you wish to withdraw, and input your withdrawal password. Withdrawals are typically processed and credited within 30 minutes; however, the exact time may vary depending on your bank or payment provider.</p><p><strong>Please note:</strong> Withdrawal processing hours are from <strong>9:00 AM to 9:00 PM</strong> daily.</p>"
         },
         luxuryOrders: {
           title: "Regarding Luxury Orders",

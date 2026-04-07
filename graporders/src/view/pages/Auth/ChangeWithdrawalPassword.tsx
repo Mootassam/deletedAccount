@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SubHeader from "src/view/shared/Header/SubHeader";
 import yupFormSchemas from "src/modules/shared/yup/yupFormSchemas";
 import * as yup from "yup";
@@ -10,34 +10,59 @@ import actions from 'src/modules/user/form/userFormActions';
 import InputFormItem from "src/shared/form/InputFormItem";
 import selectors from "src/modules/auth/authSelectors";
 import ButtonIcon from "src/shared/ButtonIcon";
-
-const schema = yup.object().shape({
-  oldPassword: yupFormSchemas.string(i18n("user.fields.oldPassword"), {
-    required: true,
-  }),
-  newPassword: yupFormSchemas.string(i18n("user.fields.newPassword"), {
-    required: true,
-  }),
-  newPasswordConfirmation: yupFormSchemas
-    .string(i18n("user.fields.newPasswordConfirmation"), {
-      required: true,
-    })
-    .oneOf(
-      [yup.ref("newPassword"), null],
-      i18n("auth.passwordChange.mustMatch")
-    ),
-});
+import authSelectors from "src/modules/auth/authSelectors";
 
 function ChangeWithdrawalPassword() {
   const dispatch = useDispatch();
+  const currentUser = useSelector(authSelectors.selectCurrentUser);
+  const hasWithdrawPassword = !!currentUser?.withdrawPassword;
+  
   const [initialValues] = useState(() => ({
     oldPassword: "",
     newPassword: "",
     newPasswordConfirmation: "",
   }));
 
+  // Create dynamic schema based on whether user has withdrawPassword
+  const createSchema = () => {
+    if (hasWithdrawPassword) {
+      // User HAS withdrawPassword - need old, new, and confirmation
+      return yup.object().shape({
+        oldPassword: yupFormSchemas.string(i18n("user.fields.oldPassword"), {
+          required: true,
+        }),
+        newPassword: yupFormSchemas.string(i18n("user.fields.newPassword"), {
+          required: true,
+        }),
+        newPasswordConfirmation: yupFormSchemas
+          .string(i18n("user.fields.newPasswordConfirmation"), {
+            required: true,
+          })
+          .oneOf(
+            [yup.ref("newPassword"), null],
+            i18n("auth.passwordChange.mustMatch")
+          ),
+      });
+    } else {
+      // User DOES NOT have withdrawPassword - only need new and confirmation
+      return yup.object().shape({
+        newPassword: yupFormSchemas.string(i18n("user.fields.newPassword"), {
+          required: true,
+        }),
+        newPasswordConfirmation: yupFormSchemas
+          .string(i18n("user.fields.newPasswordConfirmation"), {
+            required: true,
+          })
+          .oneOf(
+            [yup.ref("newPassword"), null],
+            i18n("auth.passwordChange.mustMatch")
+          ),
+      });
+    }
+  };
+
   const form = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(createSchema()),
     mode: "all",
     defaultValues: initialValues,
   });
@@ -45,12 +70,22 @@ function ChangeWithdrawalPassword() {
   const saveLoading = useSelector(selectors.selectLoadingPasswordChange);
 
   const onSubmit = (values) => {
-    dispatch(actions.doUpdateWithdrawPassword(values));
+    // If no withdrawPassword exists, send undefined for oldPassword
+    const submitData = {
+      newPassword: values.newPassword,
+      ...(hasWithdrawPassword && { oldPassword: values.oldPassword }),
+    };
+    dispatch(actions.doUpdateWithdrawPassword(submitData));
   };
+
+  // Get the appropriate title
+  const pageTitle = hasWithdrawPassword 
+    ? i18n('pages.changePassword.withdrawPassword')
+    : i18n('pages.changePassword.addWithdrawPassword');
 
   return (
     <div>
-      <SubHeader title={i18n('pages.changePassword.withdrawPassword')} path="/profile" />
+      <SubHeader title={pageTitle} path="/profile" />
 
       <style>{`
         .change-password-container {
@@ -101,6 +136,17 @@ function ChangeWithdrawalPassword() {
         .bank-input::placeholder {
           color: rgba(255,255,255,0.4);
           font-size: 14px;
+        }
+
+        .bank-input.error {
+          border-color: #ff4444;
+        }
+
+        .error-message {
+          color: #ff4444;
+          font-size: 12px;
+          margin-top: 4px;
+          margin-left: 4px;
         }
 
         /* Submit Button - gold gradient */
@@ -155,6 +201,17 @@ function ChangeWithdrawalPassword() {
           font-weight: 600;
         }
 
+        /* Info message for first-time setup */
+        .info-message {
+          background: rgba(212, 175, 55, 0.1);
+          border-left: 3px solid #d4af37;
+          padding: 12px 16px;
+          border-radius: 8px;
+          margin-bottom: 20px;
+          font-size: 14px;
+          color: rgba(255,255,255,0.9);
+        }
+
         /* Responsive adjustments */
         @media (max-width: 380px) {
           .change-password-container {
@@ -174,19 +231,30 @@ function ChangeWithdrawalPassword() {
       <div className="change-password-container">
         <FormProvider {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            {/* Old Password */}
-            <div className="form-group">
-              <div className="label__form">
-                <span className="required-asterisk">*</span>
-                <span>{i18n('pages.changePassword.oldPassword')}</span>
+            {/* Show info message for first-time setup */}
+            {!hasWithdrawPassword && (
+              <div className="info-message">
+                <i className="fas fa-info-circle" style={{ marginRight: '8px', color: '#d4af37' }}></i>
+                {i18n('pages.changePassword.firstTimeSetupMessage')}
               </div>
-              <InputFormItem
-                type="password"
-                name="oldPassword"
-                autoComplete="old-password"
-                className="bank-input"
-              />
-            </div>
+            )}
+
+            {/* Old Password - Only show if user HAS withdrawPassword */}
+            {hasWithdrawPassword && (
+              <div className="form-group">
+                <div className="label__form">
+                  <span className="required-asterisk">*</span>
+                  <span>{i18n('pages.changePassword.oldPassword')}</span>
+                </div>
+                <InputFormItem
+                  type="password"
+                  name="oldPassword"
+                  autoComplete="current-password"
+                  className="bank-input"
+                  placeholder={i18n('pages.changePassword.enterOldPassword')}
+                />
+              </div>
+            )}
 
             {/* New Password */}
             <div className="form-group">
@@ -199,6 +267,7 @@ function ChangeWithdrawalPassword() {
                 name="newPassword"
                 autoComplete="new-password"
                 className="bank-input"
+                placeholder={i18n('pages.changePassword.enterNewPassword')}
               />
             </div>
 
@@ -213,6 +282,7 @@ function ChangeWithdrawalPassword() {
                 name="newPasswordConfirmation"
                 autoComplete="new-password"
                 className="bank-input"
+                placeholder={i18n('pages.changePassword.confirmNewPassword')}
               />
             </div>
 
@@ -223,7 +293,9 @@ function ChangeWithdrawalPassword() {
               type="submit"
             >
               <ButtonIcon loading={saveLoading} iconClass="far fa-save" />
-              {i18n('pages.changePassword.submit')}
+              {hasWithdrawPassword 
+                ? i18n('pages.changePassword.submit')
+                : i18n('pages.changePassword.create')}
             </button>
 
             {/* Note */}

@@ -366,7 +366,14 @@ const en = {
       confirmPassword: "Confirm Password",
       submit: "Submit",
       note: "Please fill out this information carefully",
-      requiredField: "*"
+      requiredField: "*",
+
+      addWithdrawPassword: "Add Withdrawal Password",
+      firstTimeSetupMessage: "Set up a withdrawal password to secure your transactions",
+      enterOldPassword: "Enter current withdrawal password",
+      enterNewPassword: "Enter new withdrawal password",
+      confirmNewPassword: "Confirm new withdrawal password",
+      create: "Create Password"
     },
 
 

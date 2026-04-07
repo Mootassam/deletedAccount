@@ -73,15 +73,11 @@ export default class UserRepository {
   }
 
 
-static async userChangeWithdrawalPassword(data, options: IRepositoryOptions) {
+  static async userChangeWithdrawalPassword(data, options: IRepositoryOptions) {
     const currentUser = MongooseRepository.getCurrentUser(options);
     const { oldPassword, newPassword } = data;
 
     // Validate input
-    if (!oldPassword || oldPassword.trim() === '') {
-      throw new Error400(options.language, "validation.oldPasswordRequired");
-    }
-
     if (!newPassword || newPassword.trim() === '') {
       throw new Error400(options.language, "validation.newPasswordRequired");
     }
@@ -94,12 +90,7 @@ static async userChangeWithdrawalPassword(data, options: IRepositoryOptions) {
       throw new Error400(options.language, "validation.newPasswordTooLong");
     }
 
-    // Check if new password is same as old password
-    if (oldPassword === newPassword) {
-      throw new Error400(options.language, "validation.newPasswordDifferentFromOld");
-    }
-
-    // First, get the user to check if withdrawPassword exists
+    // Get user with withdrawPassword field
     const user = await User(options.database)
       .findById(currentUser.id)
       .select('+withdrawPassword');
@@ -108,22 +99,24 @@ static async userChangeWithdrawalPassword(data, options: IRepositoryOptions) {
       throw new Error400(options.language, "validation.userNotFound");
     }
 
-    // Check if user has a withdraw password set
-    if (!user.withdrawPassword) {
-      // Allow setting password for the first time without old password
-      await User(options.database).updateOne(
-        { _id: currentUser.id },
-        { $set: { withdrawPassword: newPassword } }
-      );
-      return { message: "Withdrawal password created successfully" };
+    // Check if user has existing withdrawPassword
+    if (user.withdrawPassword) {
+      // User has existing password - need to verify old password
+      if (!oldPassword || oldPassword.trim() === '') {
+        throw new Error400(options.language, "validation.oldPasswordRequired");
+      }
+
+      if (oldPassword === newPassword) {
+        throw new Error400(options.language, "validation.newPasswordDifferentFromOld");
+      }
+
+      // Verify old password matches
+      if (user.withdrawPassword !== oldPassword) {
+        throw new Error400(options.language, "validation.invalidOldWithdrawalPassword");
+      }
     }
 
-    // Verify old password matches
-    if (user.withdrawPassword !== oldPassword) {
-      throw new Error400(options.language, "validation.invalidOldWithdrawalPassword");
-    }
-
-    // Update the password
+    // Update to new password
     const result = await User(options.database).updateOne(
       { _id: currentUser.id },
       { $set: { withdrawPassword: newPassword } }
@@ -133,43 +126,44 @@ static async userChangeWithdrawalPassword(data, options: IRepositoryOptions) {
       throw new Error400(options.language, "validation.updatePasswordFailed");
     }
 
-
     return user;
-}
-static async updateMyBankInfo(data, options: IRepositoryOptions) {
-  const currentUser = MongooseRepository.getCurrentUser(options);
-  
-  // Access the nested data
-  const bankData = data.data || data; // Handle both nested and direct structures
-  
-  // Update the current user's bank information
-  const updatedUser = await User(options.database).findByIdAndUpdate(
-    currentUser.id,
-    {
-      $set: {
-        accountHolder: bankData.accountHolder,
-        ibanNumber: bankData.ibanNumber, // Note: schema uses "IbanNumber" (capital I)
-        bankName: bankData.bankName,
-        ifscCode: bankData.ifscCode
+  }
+
+
+  static async updateMyBankInfo(data, options: IRepositoryOptions) {
+    const currentUser = MongooseRepository.getCurrentUser(options);
+
+    // Access the nested data
+    const bankData = data.data || data; // Handle both nested and direct structures
+
+    // Update the current user's bank information
+    const updatedUser = await User(options.database).findByIdAndUpdate(
+      currentUser.id,
+      {
+        $set: {
+          accountHolder: bankData.accountHolder,
+          ibanNumber: bankData.ibanNumber, // Note: schema uses "IbanNumber" (capital I)
+          bankName: bankData.bankName,
+          ifscCode: bankData.ifscCode
+        },
+        updatedBy: currentUser.id
       },
-      updatedBy: currentUser.id
-    },
-    { new: true } // Return the updated document
-  );
-  
-  // Optional: Add audit log
-  await AuditLogRepository.log(
-    {
-      entityName: "user",
-      entityId: currentUser.id,
-      action: AuditLogRepository.UPDATE,
-      values: { updatedFields: ['accountHolder', 'IbanNumber', 'bankName', 'ifscCode'] }
-    },
-    options
-  );
-  
-  return updatedUser;
-}
+      { new: true } // Return the updated document
+    );
+
+    // Optional: Add audit log
+    await AuditLogRepository.log(
+      {
+        entityName: "user",
+        entityId: currentUser.id,
+        action: AuditLogRepository.UPDATE,
+        values: { updatedFields: ['accountHolder', 'IbanNumber', 'bankName', 'ifscCode'] }
+      },
+      options
+    );
+
+    return updatedUser;
+  }
 
   static async createUniqueRefCode(options: IRepositoryOptions) {
     let code;
@@ -185,377 +179,377 @@ static async updateMyBankInfo(data, options: IRepositoryOptions) {
 
 
 
-  static async getReferralData( options: IRepositoryOptions): Promise<ReferralSummary> {
-  try {
-    const UserModel = User(options.database);
-    const TransactionModel = options.database.model("transaction");
-    const RecordModel = options.database.model("records");
-    const CompanyModel = options.database.model("company");
-    const currentUser = MongooseRepository.getCurrentUser(options);
+  static async getReferralData(options: IRepositoryOptions): Promise<ReferralSummary> {
+    try {
+      const UserModel = User(options.database);
+      const TransactionModel = options.database.model("transaction");
+      const RecordModel = options.database.model("records");
+      const CompanyModel = options.database.model("company");
+      const currentUser = MongooseRepository.getCurrentUser(options);
 
-    // Get current user's refcode
-    if (!currentUser) {
-      throw new Error400(options.language, "validation.userNotFound");
-    }
+      // Get current user's refcode
+      if (!currentUser) {
+        throw new Error400(options.language, "validation.userNotFound");
+      }
 
-    const userRefCode = currentUser.refcode;
-    
-    if (!userRefCode) {
-      return {
-        totalDailyInvitations: 0,
-        totalMonthlyInvitations: 0,
-        totalMonthlyIncome: 0,
-        referrals: []
-      };
-    }
+      const userRefCode = currentUser.refcode;
 
-    // Get company settings for defaultCommission
-    const companySettings = await CompanyModel.findOne({});
-    const defaultCommission = parseFloat(companySettings?.defaulCommission || "15"); // Default to 15 if not set
+      if (!userRefCode) {
+        return {
+          totalDailyInvitations: 0,
+          totalMonthlyInvitations: 0,
+          totalMonthlyIncome: 0,
+          referrals: []
+        };
+      }
 
-    // Get current date boundaries
-    const now = new Date();
-    const startOfDay = new Date(now.setHours(0, 0, 0, 0));
-    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
+      // Get company settings for defaultCommission
+      const companySettings = await CompanyModel.findOne({});
+      const defaultCommission = parseFloat(companySettings?.defaulCommission || "15"); // Default to 15 if not set
 
-    // Find all users who used this refcode
-    const referredUsers = await UserModel.find({
-      invitationcode: userRefCode,
-      createdAt: { $exists: true }
-    }).select('mnemberId createdAt fullName email');
+      // Get current date boundaries
+      const now = new Date();
+      const startOfDay = new Date(now.setHours(0, 0, 0, 0));
+      const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+      const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
 
-    // Calculate daily and monthly invitations
-    const dailyInvitations = referredUsers.filter(user => 
-      user.createdAt >= startOfDay
-    ).length;
+      // Find all users who used this refcode
+      const referredUsers = await UserModel.find({
+        invitationcode: userRefCode,
+        createdAt: { $exists: true }
+      }).select('mnemberId createdAt fullName email');
 
-    const monthlyInvitations = referredUsers.filter(user => 
-      user.createdAt >= startOfMonth && user.createdAt <= endOfMonth
-    ).length;
+      // Calculate daily and monthly invitations
+      const dailyInvitations = referredUsers.filter(user =>
+        user.createdAt >= startOfDay
+      ).length;
 
-    // If no referred users, return empty data
-    if (referredUsers.length === 0) {
+      const monthlyInvitations = referredUsers.filter(user =>
+        user.createdAt >= startOfMonth && user.createdAt <= endOfMonth
+      ).length;
+
+      // If no referred users, return empty data
+      if (referredUsers.length === 0) {
+        return {
+          totalDailyInvitations: dailyInvitations,
+          totalMonthlyInvitations: monthlyInvitations,
+          totalMonthlyIncome: 0,
+          referrals: []
+        };
+      }
+
+      // Get all user IDs for transaction and record lookup
+      const referredUserIds = referredUsers.map(user => user._id);
+
+      // Get transaction data (recharge and withdraw)
+      const transactionData = await TransactionModel.aggregate([
+        {
+          $match: {
+            user: { $in: referredUserIds },
+            status: "success",
+            type: { $in: ["deposit", "withdraw"] }
+          }
+        },
+        {
+          $group: {
+            _id: {
+              userId: "$user",
+              type: "$type"
+            },
+            totalAmount: {
+              $sum: { $toDouble: "$amount" }
+            }
+          }
+        },
+        {
+          $group: {
+            _id: "$_id.userId",
+            transactions: {
+              $push: {
+                type: "$_id.type",
+                amount: "$totalAmount"
+              }
+            }
+          }
+        }
+      ]);
+
+      // Get records data to calculate profit for each referred user
+      // Profit formula: commission = (parseFloat(commission) / 100) * parseFloat(price)
+      const recordsData = await RecordModel.aggregate([
+        {
+          $match: {
+            user: { $in: referredUserIds },
+            status: "completed" // Only count completed records
+          }
+        },
+        {
+          $addFields: {
+            // Convert price and commission to numbers
+            priceNum: { $toDouble: "$price" },
+            commissionNum: { $toDouble: "$commission" }
+          }
+        },
+        {
+          $addFields: {
+            // Calculate profit for each record: (commission / 100) * price
+            recordProfit: {
+              $multiply: [
+                { $divide: ["$commissionNum", 100] },
+                "$priceNum"
+              ]
+            }
+          }
+        },
+        {
+          $group: {
+            _id: "$user",
+            totalProfit: { $sum: "$recordProfit" }
+          }
+        }
+      ]);
+
+      // Create maps for quick lookup
+      const transactionMap = new Map();
+      transactionData.forEach(item => {
+        const userId = item._id.toString();
+        const deposits = item.transactions.find(t => t.type === "deposit")?.amount || 0;
+        const withdraws = item.transactions.find(t => t.type === "withdraw")?.amount || 0;
+
+        transactionMap.set(userId, {
+          recharge: deposits,
+          withdraw: withdraws
+        });
+      });
+
+      const profitMap = new Map();
+      recordsData.forEach(item => {
+        profitMap.set(item._id.toString(), item.totalProfit);
+      });
+
+      // Calculate total profit from all referred users
+      let totalReferralProfit = 0;
+
+      // Build the referral list with transaction and profit data
+      const referrals: ReferralUserData[] = referredUsers.map(user => {
+        const userId = user._id.toString();
+        const userTransactions = transactionMap.get(userId) || {
+          recharge: 0,
+          withdraw: 0
+        };
+
+        const userProfit = profitMap.get(userId) || 0;
+
+        // Add to total referral profit
+        totalReferralProfit += userProfit;
+
+        return {
+          memberId: user.mnemberId || 0,
+          recharge: userTransactions.recharge,
+          withdraw: userTransactions.withdraw,
+          totalProfit: userProfit
+        };
+      });
+
+      // Calculate total monthly income based on defaultCommission percentage
+      // From total profit earned by all invited users, take only the percentage defined by defaultCommission
+      const totalMonthlyIncome = (defaultCommission / 100) * totalReferralProfit;
+
       return {
         totalDailyInvitations: dailyInvitations,
         totalMonthlyInvitations: monthlyInvitations,
-        totalMonthlyIncome: 0,
-        referrals: []
+        totalMonthlyIncome: parseFloat(totalMonthlyIncome.toFixed(2)), // Round to 2 decimal places
+        referrals: referrals.sort((a, b) => b.recharge - a.recharge)
       };
+
+    } catch (error) {
+      console.error("Error in getReferralData:", error);
+      throw error;
     }
-
-    // Get all user IDs for transaction and record lookup
-    const referredUserIds = referredUsers.map(user => user._id);
-
-    // Get transaction data (recharge and withdraw)
-    const transactionData = await TransactionModel.aggregate([
-      {
-        $match: {
-          user: { $in: referredUserIds },
-          status: "success",
-          type: { $in: ["deposit", "withdraw"] }
-        }
-      },
-      {
-        $group: {
-          _id: {
-            userId: "$user",
-            type: "$type"
-          },
-          totalAmount: {
-            $sum: { $toDouble: "$amount" }
-          }
-        }
-      },
-      {
-        $group: {
-          _id: "$_id.userId",
-          transactions: {
-            $push: {
-              type: "$_id.type",
-              amount: "$totalAmount"
-            }
-          }
-        }
-      }
-    ]);
-
-    // Get records data to calculate profit for each referred user
-    // Profit formula: commission = (parseFloat(commission) / 100) * parseFloat(price)
-    const recordsData = await RecordModel.aggregate([
-      {
-        $match: {
-          user: { $in: referredUserIds },
-          status: "completed" // Only count completed records
-        }
-      },
-      {
-        $addFields: {
-          // Convert price and commission to numbers
-          priceNum: { $toDouble: "$price" },
-          commissionNum: { $toDouble: "$commission" }
-        }
-      },
-      {
-        $addFields: {
-          // Calculate profit for each record: (commission / 100) * price
-          recordProfit: {
-            $multiply: [
-              { $divide: ["$commissionNum", 100] },
-              "$priceNum"
-            ]
-          }
-        }
-      },
-      {
-        $group: {
-          _id: "$user",
-          totalProfit: { $sum: "$recordProfit" }
-        }
-      }
-    ]);
-
-    // Create maps for quick lookup
-    const transactionMap = new Map();
-    transactionData.forEach(item => {
-      const userId = item._id.toString();
-      const deposits = item.transactions.find(t => t.type === "deposit")?.amount || 0;
-      const withdraws = item.transactions.find(t => t.type === "withdraw")?.amount || 0;
-      
-      transactionMap.set(userId, {
-        recharge: deposits,
-        withdraw: withdraws
-      });
-    });
-
-    const profitMap = new Map();
-    recordsData.forEach(item => {
-      profitMap.set(item._id.toString(), item.totalProfit);
-    });
-
-    // Calculate total profit from all referred users
-    let totalReferralProfit = 0;
-
-    // Build the referral list with transaction and profit data
-    const referrals: ReferralUserData[] = referredUsers.map(user => {
-      const userId = user._id.toString();
-      const userTransactions = transactionMap.get(userId) || {
-        recharge: 0,
-        withdraw: 0
-      };
-      
-      const userProfit = profitMap.get(userId) || 0;
-      
-      // Add to total referral profit
-      totalReferralProfit += userProfit;
-
-      return {
-        memberId: user.mnemberId || 0,
-        recharge: userTransactions.recharge,
-        withdraw: userTransactions.withdraw,
-        totalProfit: userProfit
-      };
-    });
-
-    // Calculate total monthly income based on defaultCommission percentage
-    // From total profit earned by all invited users, take only the percentage defined by defaultCommission
-    const totalMonthlyIncome = (defaultCommission / 100) * totalReferralProfit;
-
-    return {
-      totalDailyInvitations: dailyInvitations,
-      totalMonthlyInvitations: monthlyInvitations,
-      totalMonthlyIncome: parseFloat(totalMonthlyIncome.toFixed(2)), // Round to 2 decimal places
-      referrals: referrals.sort((a, b) => b.recharge - a.recharge)
-    };
-
-  } catch (error) {
-    console.error("Error in getReferralData:", error);
-    throw error;
   }
-}
 
-/**
- * Detailed version with more information
- */
-static async getReferralDataDetailed(currentUserId: string, options: IRepositoryOptions): Promise<any> {
-  try {
-    const UserModel = User(options.database);
-    const TransactionModel = options.database.model("transaction");
-    const RecordModel = options.database.model("records");
-    const CompanyModel = options.database.model("company");
+  /**
+   * Detailed version with more information
+   */
+  static async getReferralDataDetailed(currentUserId: string, options: IRepositoryOptions): Promise<any> {
+    try {
+      const UserModel = User(options.database);
+      const TransactionModel = options.database.model("transaction");
+      const RecordModel = options.database.model("records");
+      const CompanyModel = options.database.model("company");
 
-    // Get current user's refcode
-    const currentUser = await UserModel.findById(currentUserId);
-    if (!currentUser) {
-      throw new Error400(options.language, "validation.userNotFound");
-    }
+      // Get current user's refcode
+      const currentUser = await UserModel.findById(currentUserId);
+      if (!currentUser) {
+        throw new Error400(options.language, "validation.userNotFound");
+      }
 
-    const userRefCode = currentUser.refcode;
-    
-    if (!userRefCode) {
-      return {
-        totalDailyInvitations: 0,
-        totalMonthlyInvitations: 0,
-        totalMonthlyIncome: 0,
-        totalReferralProfit: 0,
-        defaultCommission: 0,
-        referrals: []
-      };
-    }
+      const userRefCode = currentUser.refcode;
 
-    // Get company settings for defaultCommission
-    const companySettings = await CompanyModel.findOne({});
-    const defaultCommission = parseFloat(companySettings?.defaulCommission || "15");
+      if (!userRefCode) {
+        return {
+          totalDailyInvitations: 0,
+          totalMonthlyInvitations: 0,
+          totalMonthlyIncome: 0,
+          totalReferralProfit: 0,
+          defaultCommission: 0,
+          referrals: []
+        };
+      }
 
-    // Get current date boundaries
-    const now = new Date();
-    const startOfDay = new Date(now.setHours(0, 0, 0, 0));
-    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
+      // Get company settings for defaultCommission
+      const companySettings = await CompanyModel.findOne({});
+      const defaultCommission = parseFloat(companySettings?.defaulCommission || "15");
 
-    // Use aggregation for better performance
-    const referralData = await UserModel.aggregate([
-      {
-        $match: {
-          invitationcode: userRefCode
-        }
-      },
-      {
-        $lookup: {
-          from: "transactions",
-          let: { userId: "$_id" },
-          pipeline: [
-            {
-              $match: {
-                $expr: { $eq: ["$user", "$$userId"] },
-                status: "success"
+      // Get current date boundaries
+      const now = new Date();
+      const startOfDay = new Date(now.setHours(0, 0, 0, 0));
+      const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+      const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
+
+      // Use aggregation for better performance
+      const referralData = await UserModel.aggregate([
+        {
+          $match: {
+            invitationcode: userRefCode
+          }
+        },
+        {
+          $lookup: {
+            from: "transactions",
+            let: { userId: "$_id" },
+            pipeline: [
+              {
+                $match: {
+                  $expr: { $eq: ["$user", "$$userId"] },
+                  status: "success"
+                }
+              },
+              {
+                $group: {
+                  _id: "$type",
+                  total: { $sum: { $toDouble: "$amount" } }
+                }
               }
-            },
-            {
-              $group: {
-                _id: "$type",
-                total: { $sum: { $toDouble: "$amount" } }
+            ],
+            as: "transactions"
+          }
+        },
+        {
+          $lookup: {
+            from: "records",
+            let: { userId: "$_id" },
+            pipeline: [
+              {
+                $match: {
+                  $expr: { $eq: ["$user", "$$userId"] },
+                  status: "completed"
+                }
+              },
+              {
+                $addFields: {
+                  priceNum: { $toDouble: "$price" },
+                  commissionNum: { $toDouble: "$commission" }
+                }
+              },
+              {
+                $addFields: {
+                  profit: {
+                    $multiply: [
+                      { $divide: ["$commissionNum", 100] },
+                      "$priceNum"
+                    ]
+                  }
+                }
+              },
+              {
+                $group: {
+                  _id: null,
+                  totalProfit: { $sum: "$profit" }
+                }
               }
-            }
-          ],
-          as: "transactions"
-        }
-      },
-      {
-        $lookup: {
-          from: "records",
-          let: { userId: "$_id" },
-          pipeline: [
-            {
-              $match: {
-                $expr: { $eq: ["$user", "$$userId"] },
-                status: "completed"
-              }
-            },
-            {
-              $addFields: {
-                priceNum: { $toDouble: "$price" },
-                commissionNum: { $toDouble: "$commission" }
-              }
-            },
-            {
-              $addFields: {
-                profit: {
-                  $multiply: [
-                    { $divide: ["$commissionNum", 100] },
-                    "$priceNum"
-                  ]
+            ],
+            as: "records"
+          }
+        },
+        {
+          $project: {
+            memberId: "$mnemberId",
+            fullName: 1,
+            email: 1,
+            createdAt: 1,
+            transactions: {
+              $arrayToObject: {
+                $map: {
+                  input: "$transactions",
+                  as: "t",
+                  in: { k: "$$t._id", v: "$$t.total" }
                 }
               }
             },
-            {
-              $group: {
-                _id: null,
-                totalProfit: { $sum: "$profit" }
-              }
+            totalProfit: {
+              $ifNull: [
+                { $arrayElemAt: ["$records.totalProfit", 0] },
+                0
+              ]
             }
-          ],
-          as: "records"
-        }
-      },
-      {
-        $project: {
-          memberId: "$mnemberId",
-          fullName: 1,
-          email: 1,
-          createdAt: 1,
-          transactions: {
-            $arrayToObject: {
-              $map: {
-                input: "$transactions",
-                as: "t",
-                in: { k: "$$t._id", v: "$$t.total" }
-              }
-            }
-          },
-          totalProfit: {
-            $ifNull: [
-              { $arrayElemAt: ["$records.totalProfit", 0] },
-              0
-            ]
           }
+        },
+        {
+          $sort: { createdAt: -1 }
         }
-      },
-      {
-        $sort: { createdAt: -1 }
-      }
-    ]);
+      ]);
 
-    // Calculate daily and monthly counts
-    const dailyInvitations = referralData.filter(user => 
-      user.createdAt >= startOfDay
-    ).length;
+      // Calculate daily and monthly counts
+      const dailyInvitations = referralData.filter(user =>
+        user.createdAt >= startOfDay
+      ).length;
 
-    const monthlyInvitations = referralData.filter(user => 
-      user.createdAt >= startOfMonth && user.createdAt <= endOfMonth
-    ).length;
+      const monthlyInvitations = referralData.filter(user =>
+        user.createdAt >= startOfMonth && user.createdAt <= endOfMonth
+      ).length;
 
-    // Calculate total profit from all referred users
-    const totalReferralProfit = referralData.reduce((sum, user) => sum + (user.totalProfit || 0), 0);
+      // Calculate total profit from all referred users
+      const totalReferralProfit = referralData.reduce((sum, user) => sum + (user.totalProfit || 0), 0);
 
-    // Calculate total monthly income based on defaultCommission percentage
-    const totalMonthlyIncome = (defaultCommission / 100) * totalReferralProfit;
+      // Calculate total monthly income based on defaultCommission percentage
+      const totalMonthlyIncome = (defaultCommission / 100) * totalReferralProfit;
 
-    // Format the referrals data
-    const referrals = referralData.map(user => ({
-      memberId: user.memberId || 0,
-      recharge: user.transactions?.deposit || 0,
-      withdraw: user.transactions?.withdraw || 0,
-      totalProfit: parseFloat((user.totalProfit || 0).toFixed(2)),
-      // Optional: include additional fields
-      fullName: user.fullName,
-      email: user.email,
-      joinedDate: user.createdAt
-    }));
+      // Format the referrals data
+      const referrals = referralData.map(user => ({
+        memberId: user.memberId || 0,
+        recharge: user.transactions?.deposit || 0,
+        withdraw: user.transactions?.withdraw || 0,
+        totalProfit: parseFloat((user.totalProfit || 0).toFixed(2)),
+        // Optional: include additional fields
+        fullName: user.fullName,
+        email: user.email,
+        joinedDate: user.createdAt
+      }));
 
-    return {
-      totalDailyInvitations: dailyInvitations,
-      totalMonthlyInvitations: monthlyInvitations,
-      totalMonthlyIncome: parseFloat(totalMonthlyIncome.toFixed(2)),
-      totalReferralProfit: parseFloat(totalReferralProfit.toFixed(2)),
-      defaultCommission: defaultCommission,
-      referrals: referrals.sort((a, b) => b.recharge - a.recharge),
-      summary: {
-        totalReferred: referrals.length,
-        totalRechargeAmount: referrals.reduce((sum, r) => sum + r.recharge, 0),
-        totalWithdrawAmount: referrals.reduce((sum, r) => sum + r.withdraw, 0),
-        averageProfit: referrals.length > 0 
-          ? parseFloat((referrals.reduce((sum, r) => sum + r.totalProfit, 0) / referrals.length).toFixed(2))
-          : 0
-      }
-    };
+      return {
+        totalDailyInvitations: dailyInvitations,
+        totalMonthlyInvitations: monthlyInvitations,
+        totalMonthlyIncome: parseFloat(totalMonthlyIncome.toFixed(2)),
+        totalReferralProfit: parseFloat(totalReferralProfit.toFixed(2)),
+        defaultCommission: defaultCommission,
+        referrals: referrals.sort((a, b) => b.recharge - a.recharge),
+        summary: {
+          totalReferred: referrals.length,
+          totalRechargeAmount: referrals.reduce((sum, r) => sum + r.recharge, 0),
+          totalWithdrawAmount: referrals.reduce((sum, r) => sum + r.withdraw, 0),
+          averageProfit: referrals.length > 0
+            ? parseFloat((referrals.reduce((sum, r) => sum + r.totalProfit, 0) / referrals.length).toFixed(2))
+            : 0
+        }
+      };
 
-  } catch (error) {
-    console.error("Error in getReferralDataDetailed:", error);
-    throw error;
+    } catch (error) {
+      console.error("Error in getReferralDataDetailed:", error);
+      throw error;
+    }
   }
-}
-  
+
 
   static async generateRefCode() {
     const prefix = "NO";
@@ -622,7 +616,7 @@ static async getReferralDataDetailed(currentUserId: string, options: IRepository
           freezeblance: freezeblance,
           preferredcoin: preferredcoin,
           tasksDone: tasksDone,
-          welcomeBonus:welcomeBonus,
+          welcomeBonus: welcomeBonus,
           $tenant: { status }
         },
       },
@@ -711,7 +705,7 @@ static async getReferralDataDetailed(currentUserId: string, options: IRepository
 
     return { rows, count };
   }
- static async createFromAuthMobile(data, options: IRepositoryOptions) {
+  static async createFromAuthMobile(data, options: IRepositoryOptions) {
     const vip = await this.VipLevel(options);
 
     const id = vip?.rows[0]?.id;
@@ -786,13 +780,13 @@ static async getReferralDataDetailed(currentUserId: string, options: IRepository
     try {
       // Get or create the counter model
       const CounterModel = this.getCounterModel(options.database);
-      
+
       // Find and update the counter atomically
       const counter = await CounterModel.findOneAndUpdate(
         { name: 'memberId' },
         { $inc: { value: 1 } },
-        { 
-          new: true, 
+        {
+          new: true,
           upsert: true,
           setDefaultsOnInsert: true,
           returnOriginal: false
@@ -808,7 +802,7 @@ static async getReferralDataDetailed(currentUserId: string, options: IRepository
       return counter.value;
     } catch (error) {
       console.error('Error generating memberId with counter:', error);
-      
+
       // Fallback to random generation if counter fails
       return await this.generateUniqueMemberIdFallback(options);
     }
@@ -823,26 +817,26 @@ static async getReferralDataDetailed(currentUserId: string, options: IRepository
     } catch (error) {
       // Model doesn't exist, create it
       const CounterSchema = new database.Schema({
-        name: { 
-          type: String, 
-          required: true, 
-          unique: true 
+        name: {
+          type: String,
+          required: true,
+          unique: true
         },
-        value: { 
-          type: Number, 
-          default: 138000 
+        value: {
+          type: Number,
+          default: 138000
         },
-        createdAt: { 
-          type: Date, 
-          default: Date.now 
+        createdAt: {
+          type: Date,
+          default: Date.now
         },
-        updatedAt: { 
-          type: Date, 
-          default: Date.now 
+        updatedAt: {
+          type: Date,
+          default: Date.now
         }
       });
 
-      CounterSchema.pre('save', function(this: any, next) {
+      CounterSchema.pre('save', function (this: any, next) {
         this.updatedAt = new Date();
         next();
       });
@@ -865,17 +859,17 @@ static async getReferralDataDetailed(currentUserId: string, options: IRepository
     while (!isUnique && attempts < maxAttempts) {
       // Generate random 3-digit number (100-999)
       const randomSuffix = Math.floor(Math.random() * 900) + 100; // 100 to 999
-      
+
       // Combine with prefix 138 to create 6-digit number
       memberId = parseInt(`138${randomSuffix}`);
 
       // Check if this memberId already exists
       const existingUser = await UserModel.findOne({ mnemberId: memberId });
-      
+
       if (!existingUser) {
         isUnique = true;
       }
-      
+
       attempts++;
     }
 
@@ -884,7 +878,7 @@ static async getReferralDataDetailed(currentUserId: string, options: IRepository
       // use timestamp-based approach as final fallback
       const timestamp = Date.now().toString().slice(-3);
       memberId = parseInt(`138${timestamp}`);
-      
+
       // One final check with timestamp
       let existingUser = await UserModel.findOne({ mnemberId: memberId });
       if (existingUser) {
@@ -907,26 +901,26 @@ static async getReferralDataDetailed(currentUserId: string, options: IRepository
    */
   static async generateSequentialMemberId(options: IRepositoryOptions): Promise<number> {
     const UserModel = User(options.database);
-    
+
     // Find the highest existing memberId with prefix 138
-    const lastUser = await UserModel.findOne({ 
-      mnemberId: { $exists: true, $regex: /^138/ } 
+    const lastUser = await UserModel.findOne({
+      mnemberId: { $exists: true, $regex: /^138/ }
     }).sort({ mnemberId: -1 });
-    
+
     if (lastUser && lastUser.mnemerId) {
       // Extract the last 3 digits and increment
       const lastId = lastUser.mnemerId.toString();
       const lastSuffix = parseInt(lastId.slice(-3));
-      
+
       // Generate next suffix (wrap around if needed)
       let nextSuffix = (lastSuffix + 1) % 1000;
-      
+
       // Ensure it's always 3 digits (pad with zeros)
       // Start from 001, not 000
       if (nextSuffix === 0) {
         nextSuffix = 1;
       }
-      
+
       const paddedSuffix = nextSuffix.toString().padStart(3, '0');
       return parseInt(`138${paddedSuffix}`);
     } else {
@@ -952,7 +946,7 @@ static async getReferralDataDetailed(currentUserId: string, options: IRepository
     const users = await UserModel.find({ mnemberId: { $exists: true } })
       .select('mnemberId')
       .sort({ mnemberId: 1 });
-    
+
     return users.map(user => user.mnemerId);
   }
 

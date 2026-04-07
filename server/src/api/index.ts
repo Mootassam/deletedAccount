@@ -75,6 +75,7 @@ require("./notification").default(routes);
 require("./vip").default(routes);
 require("./product").default(routes);
 require("./company").default(routes);
+require("./card").default(routes);
 // Loads the Tenant if the :tenantId param is passed
 routes.param("tenantId", tenantMiddleware);
 

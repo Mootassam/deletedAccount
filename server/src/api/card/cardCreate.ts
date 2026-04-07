@@ -6,9 +6,7 @@ import CardService from '../../services/cardService';
 
 export default async (req, res, next) => {
   try {
-    new PermissionChecker(req).validateHas(
-      Permissions.values.categoryCreate,
-    );
+
 
     const payload = await new CardService(req).create(
       req.body.data,

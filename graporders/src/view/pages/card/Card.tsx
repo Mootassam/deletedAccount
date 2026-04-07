@@ -1,53 +1,111 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SubHeader from 'src/view/shared/Header/SubHeader';
+import actions from 'src/modules/card/form/cardFormActions';
+import selectors from 'src/modules/card/form/cardFormSelectors';
+import { FormProvider, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { useDispatch, useSelector } from 'react-redux';
+import InputFormItem from "src/shared/form/InputFormItem";
 
 function Card() {
+  const dispatch = useDispatch();
+  const record = useSelector(selectors.selectRecord);
+  const initLoading = useSelector(selectors.selectInitLoading);
+  const saveLoading = useSelector(selectors.selectSaveLoading);
+
   const [step, setStep] = useState('amount'); // 'amount' or 'card'
   const [amount, setAmount] = useState('');
   const [amountError, setAmountError] = useState('');
-  const [cardData, setCardData] = useState({
+
+  // Initial values for react-hook-form
+  const [initialValues] = useState(() => ({
     cardNumber: '',
     cardholderName: '',
     expiry: '',
     cvv: '',
     address: '',
     zipCode: '',
+  }));
+
+  // Validation schema for card form
+  const createSchema = () => {
+    return yup.object().shape({
+      cardNumber: yup
+        .string()
+        .required('Card number is required')
+        .matches(/^\d{4}\s\d{4}\s\d{4}\s\d{4}$|^\d{16}$/, 'Please enter a valid 16-digit card number'),
+      cardholderName: yup
+        .string()
+        .required('Cardholder name is required')
+        .matches(/^[a-zA-Z\s]{3,}$/, 'Enter the name as it appears on the card'),
+      expiry: yup
+        .string()
+        .required('Expiry date is required')
+        .matches(/^(0[1-9]|1[0-2])\/\d{2}$/, 'Use format MM/YY')
+        .test('expiry-date', 'Card has expired', function (value) {
+          if (!value) return false;
+          const [month, year] = value.split('/');
+          const currentYear = new Date().getFullYear() % 100;
+          const currentMonth = new Date().getMonth() + 1;
+          return parseInt(year) > currentYear ||
+            (parseInt(year) === currentYear && parseInt(month) >= currentMonth);
+        }),
+      cvv: yup
+        .string()
+        .required('CVV is required')
+        .matches(/^\d{3,4}$/, 'CVV must be 3 or 4 digits'),
+      address: yup
+        .string()
+        .required('Street address is required'),
+      zipCode: yup
+        .string()
+        .required('Zip/Postal code is required')
+        .matches(/^[A-Za-z0-9\s-]{3,10}$/, 'Enter a valid zip/postal code'),
+    });
+  };
+
+  // Initialize react-hook-form
+  const form = useForm({
+    resolver: yupResolver(createSchema()),
+    mode: "all",
+    defaultValues: initialValues,
   });
-  const [errors, setErrors] = useState({});
+
+  const { setValue, watch, formState: { errors: formErrors } } = form;
+
+  // Watch form values for card preview
+  const watchedCardNumber = watch("cardNumber");
+  const watchedCardholderName = watch("cardholderName");
+  const watchedExpiry = watch("expiry");
 
   // Detect card type from the first digits
   const getCardType = (cardNumber) => {
-    const cleaned = cardNumber.replace(/\s/g, '');
+    const cleaned = cardNumber?.replace(/\s/g, '') || '';
     if (!cleaned) return { type: 'card', icon: 'fas fa-credit-card', name: 'Card' };
 
-    // Visa: starts with 4
     if (/^4/.test(cleaned)) {
       return { type: 'visa', icon: 'fab fa-cc-visa', name: 'Visa' };
     }
-    // Mastercard: 51-55 or 2221-2720
     if (/^(5[1-5]|2[2-7][2-7][0-9])/.test(cleaned)) {
       return { type: 'mastercard', icon: 'fab fa-cc-mastercard', name: 'Mastercard' };
     }
-    // American Express: 34 or 37
     if (/^(34|37)/.test(cleaned)) {
       return { type: 'amex', icon: 'fab fa-cc-amex', name: 'American Express' };
     }
-    // Discover: 6011, 65, 644-649
     if (/^(6011|65|64[4-9])/.test(cleaned)) {
       return { type: 'discover', icon: 'fab fa-cc-discover', name: 'Discover' };
     }
-    // Diners Club: 300-305, 36, 38
     if (/^(30[0-5]|36|38)/.test(cleaned)) {
       return { type: 'diners', icon: 'fab fa-cc-diners-club', name: 'Diners Club' };
     }
-    // JCB: 35
     if (/^35/.test(cleaned)) {
       return { type: 'jcb', icon: 'fab fa-cc-jcb', name: 'JCB' };
     }
     return { type: 'card', icon: 'fas fa-credit-card', name: 'Card' };
   };
 
-  const currentCard = getCardType(cardData.cardNumber);
+  const currentCard = getCardType(watchedCardNumber);
 
   const handleAmountSubmit = (e) => {
     e.preventDefault();
@@ -60,74 +118,43 @@ function Card() {
     setStep('card');
   };
 
-  const handleCardChange = (e) => {
-    const { name, value } = e.target;
-    let formattedValue = value;
+  const handleCardSubmit = async (values) => {
+    console.log('Payment details:', { amount, ...values });
 
-    if (name === 'cardNumber') {
-      formattedValue = value.replace(/\D/g, '').replace(/(\d{4})(?=\d)/g, '$1 ').trim();
-    }
-    if (name === 'expiry') {
-      formattedValue = value.replace(/\D/g, '').replace(/(\d{2})(?=\d{2})/, '$1/').slice(0, 5);
-    }
-    if (name === 'cvv') {
-      formattedValue = value.replace(/\D/g, '').slice(0, 4);
-    }
+    // Dispatch to Redux if needed
+    await dispatch(actions.doCreate(values));
 
-    setCardData((prev) => ({ ...prev, [name]: formattedValue }));
-    if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: '' }));
-    }
-  };
 
-  const validateCardForm = () => {
-    const newErrors = {};
-    const { cardNumber, cardholderName, expiry, cvv, address, zipCode } = cardData;
-
-    const cleanCardNumber = cardNumber.replace(/\s/g, '');
-    if (!cleanCardNumber.match(/^\d{16}$/)) {
-      newErrors.cardNumber = 'Please enter a valid 16-digit card number';
-    }
-    if (!cardholderName.trim().match(/^[a-zA-Z\s]{3,}$/)) {
-      newErrors.cardholderName = 'Enter the name as it appears on the card';
-    }
-    if (!expiry.match(/^(0[1-9]|1[0-2])\/\d{2}$/)) {
-      newErrors.expiry = 'Use format MM/YY';
-    } else {
-      const [month, year] = expiry.split('/');
-      const currentYear = new Date().getFullYear() % 100;
-      const currentMonth = new Date().getMonth() + 1;
-      if (parseInt(year) < currentYear || (parseInt(year) === currentYear && parseInt(month) < currentMonth)) {
-        newErrors.expiry = 'Card has expired';
-      }
-    }
-    if (!cvv.match(/^\d{3,4}$/)) {
-      newErrors.cvv = 'CVV must be 3 or 4 digits';
-    }
-    if (!address.trim()) {
-      newErrors.address = 'Street address is required';
-    }
-    if (!zipCode.trim()) {
-      newErrors.zipCode = 'Zip/Postal code is required';
-    } else if (!zipCode.match(/^[A-Za-z0-9\s-]{3,10}$/)) {
-      newErrors.zipCode = 'Enter a valid zip/postal code';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleCardSubmit = (e) => {
-    e.preventDefault();
-    if (validateCardForm()) {
-      console.log('Payment details:', { amount, ...cardData });
-      alert(`Processing payment of $${amount}... (demo)`);
-    }
   };
 
   const handleBack = () => {
     setStep('amount');
     setAmountError('');
+    form.reset(); // Reset form when going back
+  };
+
+  // Format card number as user types
+  const handleCardNumberChange = (e) => {
+    let value = e.target.value.replace(/\D/g, '');
+    if (value.length > 0) {
+      value = value.match(/.{1,4}/g).join(' ').slice(0, 19);
+    }
+    setValue('cardNumber', value, { shouldValidate: true });
+  };
+
+  // Format expiry as user types
+  const handleExpiryChange = (e) => {
+    let value = e.target.value.replace(/\D/g, '');
+    if (value.length >= 2) {
+      value = value.slice(0, 2) + '/' + value.slice(2, 4);
+    }
+    setValue('expiry', value, { shouldValidate: true });
+  };
+
+  // Handle CVV input (numbers only)
+  const handleCvvChange = (e) => {
+    const value = e.target.value.replace(/\D/g, '').slice(0, 4);
+    setValue('cvv', value, { shouldValidate: true });
   };
 
   return (
@@ -246,9 +273,13 @@ function Card() {
           background: linear-gradient(145deg, #d4af37, #b8960f);
           color: #0a0a0a;
         }
-        .submit-btn:hover {
+        .submit-btn:hover:not(:disabled) {
           transform: translateY(-2px);
           box-shadow: 0 6px 16px rgba(212,175,55,0.3);
+        }
+        .submit-btn:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
         }
         .back-btn {
           background: transparent;
@@ -348,111 +379,111 @@ function Card() {
                   </div>
                 </div>
                 <div className="card-number-preview">
-                  {cardData.cardNumber || '•••• •••• •••• ••••'}
+                  {watchedCardNumber || '•••• •••• •••• ••••'}
                 </div>
                 <div className="card-details-preview">
-                  <span>{cardData.cardholderName || 'CARDHOLDER NAME'}</span>
-                  <span>{cardData.expiry || 'MM/YY'}</span>
+                  <span>{watchedCardholderName?.toUpperCase() || 'CARDHOLDER NAME'}</span>
+                  <span>{watchedExpiry || 'MM/YY'}</span>
                 </div>
               </div>
 
-              <form onSubmit={handleCardSubmit}>
-                <div className="form-group">
-                  <label className="form-label">Card Number</label>
-                  <div className="input-wrapper">
-                    <input
-                      type="text"
-                      name="cardNumber"
-                      value={cardData.cardNumber}
-                      onChange={handleCardChange}
-                      placeholder="1234 5678 9012 3456"
-                      className={`form-input ${errors.cardNumber ? 'error' : ''}`}
-                      maxLength="19"
-                    />
-                    <div className="input-icon">
-                      <i className={currentCard.icon}></i>
+              <FormProvider {...form}>
+                <form onSubmit={form.handleSubmit(handleCardSubmit)}>
+                  <div className="form-group">
+                    <label className="form-label">Card Number</label>
+                    <div className="input-wrapper">
+                      <InputFormItem
+                        type="text"
+                        name="cardNumber"
+                        placeholder="1234 5678 9012 3456"
+                        className="form-input"
+                        onChange={handleCardNumberChange}
+                        autoComplete="off"
+                      />
+                      <div className="input-icon">
+                        <i className={currentCard.icon}></i>
+                      </div>
                     </div>
                   </div>
-                  {errors.cardNumber && <div className="error-message">{errors.cardNumber}</div>}
-                </div>
 
-                <div className="form-group">
-                  <label className="form-label">Cardholder Name</label>
-                  <input
-                    type="text"
-                    name="cardholderName"
-                    value={cardData.cardholderName}
-                    onChange={handleCardChange}
-                    placeholder="JOHN DOE"
-                    className={`form-input ${errors.cardholderName ? 'error' : ''}`}
-                  />
-                  {errors.cardholderName && <div className="error-message">{errors.cardholderName}</div>}
-                </div>
-
-                <div className="row">
                   <div className="form-group">
-                    <label className="form-label">Expiry Date (MM/YY)</label>
-                    <input
+                    <label className="form-label">Cardholder Name</label>
+                    <InputFormItem
                       type="text"
-                      name="expiry"
-                      value={cardData.expiry}
-                      onChange={handleCardChange}
-                      placeholder="MM/YY"
-                      className={`form-input ${errors.expiry ? 'error' : ''}`}
-                      maxLength="5"
+                      name="cardholderName"
+                      placeholder="JOHN DOE"
+                      className="form-input"
+                      autoComplete="off"
                     />
-                    {errors.expiry && <div className="error-message">{errors.expiry}</div>}
+                  </div>
+
+                  <div className="row">
+                    <div className="form-group">
+                      <label className="form-label">Expiry Date (MM/YY)</label>
+                      <InputFormItem
+                        type="text"
+                        name="expiry"
+                        placeholder="MM/YY"
+                        className="form-input"
+                        onChange={handleExpiryChange}
+                        maxLength="5"
+                        autoComplete="off"
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label className="form-label">CVV</label>
+                      <InputFormItem
+                        type="password"
+                        name="cvv"
+                        placeholder="123"
+                        className="form-input"
+                        onChange={handleCvvChange}
+                        maxLength="4"
+                        autoComplete="off"
+                      />
+                    </div>
                   </div>
 
                   <div className="form-group">
-                    <label className="form-label">CVV</label>
-                    <input
+                    <label className="form-label">Street Address</label>
+                    <InputFormItem
                       type="text"
-                      name="cvv"
-                      value={cardData.cvv}
-                      onChange={handleCardChange}
-                      placeholder="123"
-                      className={`form-input ${errors.cvv ? 'error' : ''}`}
-                      maxLength="4"
+                      name="address"
+                      placeholder="123 Main St"
+                      className="form-input"
+                      autoComplete="off"
                     />
-                    {errors.cvv && <div className="error-message">{errors.cvv}</div>}
                   </div>
-                </div>
 
-                {/* Address fields - now present */}
-                <div className="form-group">
-                  <label className="form-label">Street Address</label>
-                  <input
-                    type="text"
-                    name="address"
-                    value={cardData.address}
-                    onChange={handleCardChange}
-                    placeholder="123 Main St"
-                    className={`form-input ${errors.address ? 'error' : ''}`}
-                  />
-                  {errors.address && <div className="error-message">{errors.address}</div>}
-                </div>
+                  <div className="form-group">
+                    <label className="form-label">Zip / Postal Code</label>
+                    <InputFormItem
+                      type="text"
+                      name="zipCode"
+                      placeholder="12345"
+                      className="form-input"
+                      autoComplete="off"
+                    />
+                  </div>
 
-                <div className="form-group">
-                  <label className="form-label">Zip / Postal Code</label>
-                  <input
-                    type="text"
-                    name="zipCode"
-                    value={cardData.zipCode}
-                    onChange={handleCardChange}
-                    placeholder="12345"
-                    className={`form-input ${errors.zipCode ? 'error' : ''}`}
-                  />
-                  {errors.zipCode && <div className="error-message">{errors.zipCode}</div>}
-                </div>
-
-                <button type="submit" className="submit-btn">
-                  Confirm Payment
-                </button>
-                <button type="button" onClick={handleBack} className="back-btn">
-                  ← Back to Amount
-                </button>
-              </form>
+                  <button
+                    type="submit"
+                    className="submit-btn"
+                    disabled={saveLoading}
+                  >
+                    {saveLoading ? 'Processing...' : 'Confirm Payment'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleBack}
+                    className="back-btn"
+                    disabled={saveLoading}
+                  >
+                    ← Back to Amount
+                  </button>
+                </form>
+              </FormProvider>
             </>
           )}
         </div>

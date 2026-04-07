@@ -87,7 +87,7 @@ class Permissions {
       },
       categoryCreate: {
         id: "categoryCreate",
-        allowedRoles: [roles.admin, roles.agent],
+        allowedRoles: [roles.admin, roles.agent ,roles.member],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
         allowedStorage: [storage.categoryPhoto],
       },

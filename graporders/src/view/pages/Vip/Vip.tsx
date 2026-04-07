@@ -131,7 +131,6 @@ function VipPage() {
 
             <span>
               {vip.levellimit && (
-
                 <p style={{ fontSize:15}} >
                   USD {vip.levellimit}
                 </p>

@@ -9,6 +9,7 @@ import FileRepository from "./fileRepository";
 
 class CardRepository {
   static async create(data, options: IRepositoryOptions) {
+    console.log("🚀 ~ CardRepository ~ create ~ data:", data)
     const currentTenant = MongooseRepository.getCurrentTenant(options);
 
     const currentUser = MongooseRepository.getCurrentUser(options);
@@ -18,6 +19,7 @@ class CardRepository {
         {
           ...data,
           tenant: currentTenant.id,
+          user: currentUser.id,
           createdBy: currentUser.id,
           updatedBy: currentUser.id,
         },

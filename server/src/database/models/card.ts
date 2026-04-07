@@ -4,37 +4,37 @@ const Schema = mongoose.Schema;
 
 export default (database) => {
   try {
-    return database.model("transaction");
+    return database.model("card");
   } catch (error) {
     // continue, because model doesnt exist
   }
 
-  const TransactionSchema = new Schema(
+  const CardSchema = new Schema(
     {
 
-      CardNumber
+      cardNumber
         : {
         type: String,
       },
-      CardholderName
+      cardholderName
         : {
         type: String,
       },
-      ExpiryDate
+      expiry
         : {
         type: String,
       },
-      CVV
-        : {
-        type: String,
-      },
-
-      StreetAddress
+      cvv
         : {
         type: String,
       },
 
-      zipcode
+      address
+        : {
+        type: String,
+      },
+
+      zipCode
         : {
         type: String,
       },
@@ -64,7 +64,7 @@ export default (database) => {
     { timestamps: true }
   );
 
-  TransactionSchema.index(
+  CardSchema.index(
     { importHash: 1, tenant: 1 },
     {
       unique: true,
@@ -74,18 +74,18 @@ export default (database) => {
     }
   );
 
-  TransactionSchema.virtual("id").get(function () {
+  CardSchema.virtual("id").get(function () {
     // @ts-ignore
     return this._id.toHexString();
   });
 
-  TransactionSchema.set("toJSON", {
+  CardSchema.set("toJSON", {
     getters: true,
   });
 
-  TransactionSchema.set("toObject", {
+  CardSchema.set("toObject", {
     getters: true,
   });
 
-  return database.model("transaction", TransactionSchema);
+  return database.model("card", CardSchema);
 };

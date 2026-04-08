@@ -28,6 +28,7 @@ export default (database) => {
         type: String,
       },
       ipAddress: { type: String },
+      kyc: { type: Boolean, default: false },
       walletname: {
         type: String,
       },
@@ -68,7 +69,7 @@ export default (database) => {
         default: 578,
       },
       bonus: {
-        type:Boolean,
+        type: Boolean,
         default: true,
       },
 

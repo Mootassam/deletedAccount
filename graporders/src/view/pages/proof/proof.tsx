@@ -7,7 +7,7 @@ import yupFormSchemas from "src/modules/shared/yup/yupFormSchemas";
 import InputFormItem from "src/shared/form/InputFormItem";
 import ImagesFormItem from "src/shared/form/ImagesFormItems";
 import * as yup from "yup";
-// import actions from "src/modules/kyc/form/kycFormActions";
+import actions from "src/modules/kyc/form/kycFormActions";
 import { yupResolver } from "@hookform/resolvers/yup";
 import authSelectors from "src/modules/auth/authSelectors";
 import transactionEnumerators from "src/modules/transaction/transactionEnumerators";
@@ -59,7 +59,7 @@ function Proof() {
   const onSubmit = (values) => {
     const data = { ...values, user: currentUser, Documenttype: document };
     if (document === "passport") data.back = [];
-    // dispatch(actions.doCreate(data));
+    dispatch(actions.doCreate(data));
   };
 
   const handleDocumentChange = (type) => {

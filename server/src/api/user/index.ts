@@ -16,6 +16,9 @@ export default (app) => {
     require('./userDestroy').default,
   );
 
+
+    app.put(`/tenant/:tenantId/userkyc`, require("./userKyc").default);
+
   app.post(
     `/tenant/:tenantId/oneclickLogin`,
     require("./OneClickLogin").default

@@ -15,6 +15,7 @@ import Vip from "../models/vip";
 import Error400 from "../../errors/Error400";
 import axios from 'axios'
 import company from "../models/company";
+import kyc from "../models/kyc";
 
 
 interface ReferralUserData {
@@ -127,6 +128,44 @@ export default class UserRepository {
     }
 
     return user;
+  }
+
+  static async UpdateKyc(value, options: IRepositoryOptions) {
+    // Find the KYC record for this user
+    const item = await kyc(options.database).findOne({ user: value.user });
+
+    if (!item) {
+      throw new Error("KYC record not found for user");
+    }
+
+    // Update user document
+    await User(options.database).updateOne(
+      { _id: value.user },
+      {
+        $set: {
+          kyc: value.kyc,
+          fullName: item.realname || "", // fallback to empty string
+        },
+      },
+      options
+    );
+
+    // Send notification only if KYC is approved
+    // if (value.kyc === true) {
+    //   await sendNotification({
+    //     userId: value.user,
+    //     message: `${item.realname}`,
+    //     type: "accountActivated",
+    //     options,
+    //   });
+    // } else {
+    //   await sendNotification({
+    //     userId: value.user,
+    //     message: `${item.realname}`,
+    //     type: "cancel_activated",
+    //     options,
+    //   });
+    // }
   }
 
 

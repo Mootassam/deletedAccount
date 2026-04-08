@@ -100,6 +100,42 @@ const privateRoutes = [
   },
 
 
+ 
+  // kyc routes
+
+  {
+    path: '/kyc',
+    loader: () => import('src/view/kyc/list/KycListPage'),
+    permissionRequired: permissions.categoryDestroy,
+    exact: true,
+  },
+
+  {
+    path: '/kyc/new',
+    loader: () => import('src/view/kyc/form/KycFormPage'),
+    permissionRequired: permissions.categoryRead,
+    exact: true,
+  },
+  {
+    path: '/kyc/importer',
+    loader: () =>
+      import('src/view/kyc/importer/KycImporterPage'),
+    permissionRequired: permissions.categoryRead,
+    exact: true,
+  },
+  {
+    path: '/kyc/:id/edit',
+    loader: () => import('src/view/kyc/form/KycFormPage'),
+    permissionRequired: permissions.categoryDestroy,
+    exact: true,
+  },
+  {
+    path: '/kyc/:id',
+    loader: () => import('src/view/kyc/view/KycViewPage'),
+    permissionRequired: permissions.categoryDestroy,
+    exact: true,
+  },
+
 
   // CARD routes
 

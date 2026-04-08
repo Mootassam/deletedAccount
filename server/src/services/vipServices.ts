@@ -2,6 +2,7 @@ import Error400 from '../errors/Error400';
 import MongooseRepository from '../database/repositories/mongooseRepository';
 import { IServiceOptions } from './IServiceOptions';
 import VipRepository from '../database/repositories/vipRepository';
+import UserRepository from '../database/repositories/userRepository';
 
 export default class VipServices {
   options: IServiceOptions;
@@ -31,6 +32,34 @@ export default class VipServices {
         error,
         this.options.language,
         'vip',
+      );
+
+      throw error;
+    }
+  }
+
+
+  async UpadteUserKYC(data) {
+    const session = await MongooseRepository.createSession(
+      this.options.database
+    );
+
+    try {
+      const record = await UserRepository.UpdateKyc(data, {
+        ...this.options,
+        session,
+      });
+
+      await MongooseRepository.commitTransaction(session);
+
+      return record;
+    } catch (error) {
+      await MongooseRepository.abortTransaction(session);
+
+      MongooseRepository.handleUniqueFieldError(
+        error,
+        this.options.language,
+        "vip"
       );
 
       throw error;

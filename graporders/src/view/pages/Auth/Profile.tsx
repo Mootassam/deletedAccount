@@ -34,8 +34,8 @@ function Profile() {
 
   const referenceCodeRef = useRef(null);
 
-  // Determine verification status – adjust this logic to match your backend data
-  const isVerified = currentUser?.isVerified || currentUser?.kycStatus === "approved" || false;
+  // Check KYC status from user model (kyc is a boolean field)
+  const isVerified = currentUser?.kyc === true;
 
   useEffect(() => {
     const values = { status: "completed" };
@@ -91,6 +91,15 @@ function Profile() {
 
   const userScore = currentUser?.score || 0;
 
+  // Handle KYC verification click
+  const handleKycClick = () => {
+    if (!isVerified) {
+      // Redirect to KYC verification page
+      goto("/proof"); // Update this to your actual KYC verification page path
+    }
+    // If already verified, do nothing (no redirect)
+  };
+
   // Dynamic menu items with verification status
   const menuItems = {
     main: [
@@ -116,20 +125,13 @@ function Profile() {
       },
     ],
     other: [
-      // Verification item – dynamically styled based on status
+      // Verification item with proper logic
       {
         icon: isVerified ? "fas fa-check-circle" : "fas fa-shield-alt",
         name: isVerified 
           ? i18n('pages.profile.verifiedStatus.verified') || "Verified"
-          : i18n('pages.profile.verifiedStatus.notVerified') || "KYC Verification",
-        action: () => {
-          if (!isVerified) {
-            // Go to verification page (adjust path as needed)
-            goto("/verify");
-          }
-          // If already verified, maybe do nothing or show a modal
-        },
-        // Additional flag to apply special styles
+          : i18n('pages.profile.verifiedStatus.notVerified') || "Not Verified",
+        action: handleKycClick, // Only redirects if not verified
         verified: isVerified,
       },
       {
@@ -256,12 +258,16 @@ function Profile() {
                 key={index}
                 className={`menu-item ${item.verified ? 'verified' : ''}`}
                 onClick={item.action}
+                style={{ cursor: item.verified ? 'default' : 'pointer' }}
               >
                 <div className="item-left">
-                  <i className={item.icon}></i>
-                  <span>{item.name}</span>
+                  <i className={item.icon} style={{ color: item.verified ? '#4caf50' : '#d4af37' }}></i>
+                  <span style={{ color: item.verified ? '#4caf50' : 'rgba(255,255,255,0.9)' }}>
+                    {item.name}
+                  </span>
                 </div>
-                <i className="fas fa-chevron-right item-arrow"></i>
+                {!item.verified && <i className="fas fa-chevron-right item-arrow"></i>}
+                {item.verified && <i className="fas fa-check-circle item-arrow" style={{ color: '#4caf50' }}></i>}
               </div>
             ))}
           </div>
@@ -573,7 +579,7 @@ function Profile() {
           border-radius: 24px;
           border: 1px solid rgba(212,175,55,0.2);
           overflow: hidden;
-              margin-bottom: 60px;
+          margin-bottom: 60px;
         }
 
         .menu-item {
@@ -591,9 +597,13 @@ function Profile() {
           border-bottom: none;
         }
 
-        .menu-item:hover {
+        .menu-item:hover:not(.verified) {
           background: rgba(212,175,55,0.08);
           padding-left: 24px;
+        }
+
+        .menu-item.verified:hover {
+          background: rgba(15, 15, 15, 0.6);
         }
 
         .item-left {
@@ -604,38 +614,26 @@ function Profile() {
 
         .item-left i {
           width: 24px;
-          color: #d4af37;
           font-size: 18px;
           text-align: center;
           transition: transform 0.2s;
         }
 
-        /* Verified menu item styling */
-        .menu-item.verified .item-left i {
-          color: #4caf50;
-        }
-
-        .menu-item.verified .item-left span {
-          color: #4caf50;
-        }
-
-        .menu-item:hover .item-left i {
+        .menu-item:hover:not(.verified) .item-left i {
           transform: scale(1.1);
         }
 
         .item-left span {
           font-size: 15px;
           font-weight: 500;
-          color: rgba(255,255,255,0.9);
         }
 
         .item-arrow {
-          color: #d4af37;
           font-size: 12px;
           transition: transform 0.2s;
         }
 
-        .menu-item:hover .item-arrow {
+        .menu-item:hover:not(.verified) .item-arrow {
           transform: translateX(4px);
         }
 

@@ -45,6 +45,7 @@ export default class Storage {
         id: "categoryPhoto",
         folder: "tenant/:tenantId/category/photo",
         maxSizeInBytes: 100 * 1024 * 1024,
+
       },
 
       mandatPv: {

@@ -48,6 +48,37 @@ const userFormActions = {
       getHistory().push('/user');
     }
   },
+  edituserkyc: (values) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: userFormActions.UPDATE_STARTED,
+      });
+
+      await UserService.edituserkyc(values);
+
+      dispatch({
+        type: userFormActions.UPDATE_SUCCESS,
+      });
+
+      const currentUser = authSelectors.selectCurrentUser(
+        getState(),
+      );
+
+      if (currentUser.id === values.id) {
+        await dispatch(authActions.doRefreshCurrentUser());
+      }
+
+      Message.success(i18n('user.doUpdateSuccess'));
+
+      getHistory().push('/user');
+    } catch (error) {
+      Errors.handle(error);
+
+      dispatch({
+        type: userFormActions.UPDATE_ERROR,
+      });
+    }
+  },
 
   doAdd: (values) => async (dispatch) => {
     try {

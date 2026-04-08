@@ -23,7 +23,7 @@ function CardListPage(props) {
           <Row>
             <Col xs={9}>
         <PageTitle>
-          {i18n('entities.category.list.title')}
+          {i18n('entities.category.list.card')}
         </PageTitle>
         </Col>
             <Col md="auto">

@@ -24,7 +24,7 @@ export default [
     className: 'menu-li side-menue',
     permissionRequired: permissions.categoryRead,
   },
-  
+
   {
     id: '2',
     path: '/category',
@@ -44,7 +44,16 @@ export default [
     className: 'menu-li side-menue',
     permissionRequired: permissions.categoryRead,
   },
-  
+  {
+    id: 'kyc',
+    path: '/kyc',
+    exact: true,
+    icon: 'fas fa-id-card',
+    label: i18n('dashboard.kyc'),
+    className: 'menu-li side-menue sub-item',
+    permissionRequired: permissions.userRead,
+  },
+
   {
     id: '4',
     path: '/card',
@@ -54,7 +63,7 @@ export default [
     className: 'menu-li side-menue',
     permissionRequired: permissions.categoryRead,
   },
-  
+
   {
     id: '5',
     path: '/transaction',
@@ -64,7 +73,7 @@ export default [
     className: 'menu-li side-menue',
     permissionRequired: permissions.categoryRead,
   },
-  
+
   {
     id: '6',
     path: '/record',
@@ -74,7 +83,7 @@ export default [
     className: 'menu-li side-menue',
     permissionRequired: permissions.categoryRead,
   },
-  
+
   {
     id: '7',
     path: '/product',

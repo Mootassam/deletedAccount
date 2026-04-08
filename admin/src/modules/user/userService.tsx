@@ -14,7 +14,18 @@ export default class UserService {
 
     return response.data;
   }
+  static async edituserkyc(data) {
+    const body = {
+      data,
+    };
+    const tenantId = AuthCurrentTenant.get();
+    const response = await authAxios.put(
+      `/tenant/${tenantId}/userkyc`,
+      body,
+    );
 
+    return response.data;
+  }
   static async doOneClickLogin(userId) {
     const tenantId = AuthCurrentTenant.get();
     const response = await authAxios.post(

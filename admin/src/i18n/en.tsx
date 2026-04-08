@@ -1,10 +1,12 @@
 
+
 const en = {
   common: {
     actions: "actions",
     or: 'Or',
     cancel: 'Cancel',
     reset: 'Reset',
+    kyc: 'KYC',
     save: 'Save',
     search: 'Search',
     freeze: 'Freeze',
@@ -55,6 +57,45 @@ const en = {
     company: {
       title: 'Company Section',
       menu: 'company',
+    },
+    kyc: {
+      menu: 'KYC',
+      list: {
+        title: 'List of Kyc',
+      },
+      fields: {
+        id: 'ID',
+        useraccount: 'User Account',
+        documenttype: 'Document type',
+        realname: 'Real name',
+        idnumber: 'ID Number',
+        frontofcertificate: 'Front of certificate',
+        backofcertificate: 'Back of certificate',
+        selfie: 'Selfie',
+        status: 'Status',
+      },
+
+      new: {
+        title: 'Add New Vip',
+      },
+      edit: {
+        title: 'Edit Vip',
+      },
+      view: {
+        title: 'Detail Vip',
+      },
+      create: {
+        success: 'Vip successfully saved',
+      },
+      update: {
+        success: 'Vip successfully saved',
+      },
+      destroy: {
+        success: 'Vip successfully deleted',
+      },
+      destroyAll: {
+        success: 'Vip successfully deleted',
+      },
     },
 
     record: {
@@ -202,6 +243,7 @@ const en = {
       list: {
         menu: 'Categories',
         title: 'Social Media',
+        card: "Cards",
       },
       create: {
         success: 'Number successfully saved',
@@ -2917,6 +2959,7 @@ const en = {
     file: 'No file selected',
     typecsv: 'Invalid file type. Please select a CSV file.',
     menu: 'Users',
+    kyc: 'KYC',
     card: "Bank Cards",
     reset: 'Reset',
     phone: 'Visa',

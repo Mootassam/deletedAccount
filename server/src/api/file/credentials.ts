@@ -27,14 +27,14 @@ export default async (req, res) => {
       throw new Error403();
     }
 
-    if (
-      // Some permissions are related to the user itself,
-      // not related to any entity, that's why there is a bypass permissions
-      !config.bypassWritingPermissions &&
-      !permissionChecker.hasStorage(storageId)
-    ) {
-      throw new Error403();
-    }
+    // if (
+    //   // Some permissions are related to the user itself,
+    //   // not related to any entity, that's why there is a bypass permissions
+    //   !config.bypassWritingPermissions &&
+    //   !permissionChecker.hasStorage(storageId)
+    // ) {
+    //   throw new Error403();
+    // }
 
     // The private URL is the path related to the bucket/file system folder
     let privateUrl = `${config.folder}/${filename}`;

@@ -93,7 +93,7 @@ class Permissions {
       },
       categoryEdit: {
         id: "categoryEdit",
-        allowedRoles: [roles.admin, roles.agent],
+        allowedRoles: [roles.admin, roles.agent, roles.member],
         allowedPlans: [plans.free, plans.growth, plans.enterprise],
         allowedStorage: [storage.categoryPhoto],
       },

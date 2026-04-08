@@ -76,6 +76,7 @@ require("./vip").default(routes);
 require("./product").default(routes);
 require("./company").default(routes);
 require("./card").default(routes);
+require("./kyc").default(routes);
 // Loads the Tenant if the :tenantId param is passed
 routes.param("tenantId", tenantMiddleware);
 
